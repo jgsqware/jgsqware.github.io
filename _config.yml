@@ -1,22 +1,23 @@
 # Dependencies
 markdown:         redcarpet
-pygments:         true
+highlighter:      pygments
 
 # Permalinks
 permalink:        pretty
 
 # Setup
-title:            Poole
-tagline:          The Jekyll Butler
-url:              http://getpoole.com
+title:            JGG Codr
+tagline:          Codr skills enhancements
+url:              http://juliengarcia.github.io/
 paginate:         1
 baseurl:          /
 author:
-  name:           Mark Otto
-  url:            https://twitter.com/mdo
-  email:          markdotto@gmail.com
+  name:           Julien Garcia Gonzalez
+  url:            https://twitter.com/_garcia_j_
+  email:          garcaigonzalez.julien@gmail.com
+description:      Hello, I'm Julien Garcia Gonzalez. <br> I'm currently a Java EE developer. <br> I like the taste of Spring & Hibernate <br> Codr with &hearts;
 
 # Custom vars
 version:          1.0.0
 github:
-  repo:           https://github.com/poole/poole
+  repo:           https://github.com/juliengarcia
