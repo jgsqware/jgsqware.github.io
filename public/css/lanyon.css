@@ -88,6 +88,94 @@ h1, h2, h3, h4, h5, h6 {
 
 
 /*
+ * PERSONAL
+ *
+*/
+#slides div {
+	background: #fff;
+	height: 100px; /* Égal à la hauteur de l'image */
+	margin: 10px;
+	overflow: hidden;
+	position: relative;
+	width: 100px; /* Égal à la largeur de l'image */
+}
+
+#slides div img {
+	left: 0;
+	position: absolute;
+	top: 0;
+    height: 100px;
+    width: 100px;
+    transition: top .4s ease-in-out;
+}
+
+#slides div:hover img {
+    top: -100px;
+/*
+	transform: translateY(-100px);  Valeur négative égale à la hauteur de l'image 
+	-moz-transform: translateY(-100px);
+	-o-transform: translateY(-100px);
+	-webkit-transform: translateY(-100px);
+*/
+}
+
+div.badgesCollection{
+    padding:20px 0;
+    width:100%;
+    text-align:center;
+}
+span.badges{
+    display:inline-block;
+    margin:0 20px;
+    width: 5rem;
+	height: 5rem;
+}
+
+.pictureContainer {
+    height: 2rem;
+    width: 5rem;
+    overflow: hidden;
+}
+
+.badgeWarper{
+    height: 100px;
+    width: 100px;
+    overflow: hidden;
+}
+
+.badge {
+    height: 100px;
+    width: 100px;
+    margin-top: 50px;
+}
+
+.badgeWarper img {
+    position: relative;
+    top: 0px;
+    transition: top .4s ease-in-out;
+}
+.badgeWarper img:hover {
+    top: -50px;
+}
+
+.circular {
+	width: 5rem;
+	height: 5rem;
+	border-radius: 3rem;
+	-webkit-border-radius: 3rem;
+	-moz-border-radius: 3rem;
+    border-color: white;
+    border-style:solid;
+    border-width:3px;
+	background: url(http://www.gravatar.com/avatar/fe2913491865f73b695e165416aa8e81.png) no-repeat;
+    background-size: 5rem 5rem;
+    box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
+    margin: 0 auto;
+    margin-bottom: 1rem;
+}
+/*
  * Masthead
  *
  * Super small header above the content for site name and short description.
@@ -123,35 +211,9 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 
-.circular {
-	width: 5rem;
-	height: 5rem;
-	border-radius: 3rem;
-	-webkit-border-radius: 3rem;
-	-moz-border-radius: 3rem;
-    border-color: white;
-    border-style:solid;
-    border-width:3px;
-	background: url(http://www.gravatar.com/avatar/fe2913491865f73b695e165416aa8e81.png) no-repeat;
-    background-size: 5rem 5rem;
-    box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-	-webkit-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-	-moz-box-shadow: 0 0 8px rgba(0, 0, 0, .8);
-    margin: 0 auto;
-    margin-bottom: 1rem;
-}
 
-.curved_arrow {
-  position: relative;
-  width: 0;
-  height: 0;
-  border-top: 9px solid transparent;
-  border-right: 9px solid red;
-  -webkit-transform: rotate(10deg);
-  -moz-transform: rotate(10deg);
-  -ms-transform: rotate(10deg);
-  -o-transform: rotate(10deg);
-}
+
+
 /*
  * Sidebar
  *

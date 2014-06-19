@@ -1,0 +1,24 @@
+---
+  - 
+    collection: "Git"
+    image: "/public/git.png"
+    badges: 
+      - 
+        title: "Try Git"
+        image: "https://backpack.openbadges.org/images/badge/9986eb98a0e77da7e7469a10e1a776e66c42aadbe2d1edbb39242dd02e65673c.png"
+        url: "https://www.codeschool.com/users/garciajulien/badges/121"
+      - 
+        title: "Git Real"
+        image: "https://backpack.openbadges.org/images/badge/8f7999107165d5b7ce20833fb770cc1ffbccedc488f72ad8947409f1bb5d7255.png"
+        url: "https://www.codeschool.com/users/garciajulien/badges/125"
+  - 
+    collection: "Ruby on Rails"
+    badges: 
+      - 
+        title: "Ruby Bits"
+        image: "https://backpack.openbadges.org/images/badge/c6c6430a3833a5b006ba9e9292bf5632ccead6efbe8c0e2385b7d9fc785574d4.png"
+        url: "https://www.codeschool.com/users/garciajulien/badges/139"
+      - 
+        title: "Ruby Bits 2"
+        image: "https://backpack.openbadges.org/images/badge/7e5e3bb23f98a9a8ee3fb3dc0a91da4f6eaa1b2c1d0e5c93f52df2ee83b89d29.png"
+        url: "https://www.codeschool.com/users/garciajulien/badges/155"
