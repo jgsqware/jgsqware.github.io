@@ -1,7 +1,12 @@
 ---
 layout: post
 title: Defining a generic copy method with inheritance
+tagline: "Using &#65124;? extends T&#65125; pattern"
+date: 2014-06-19
+category: Development
+tags: [Java, Generic]
 ---
+
 
 For an intern project, I need to  develop an entity model with multiple inheritance.
 So, the classic model is:
@@ -32,7 +37,7 @@ In java, I modalized it like this:
             super.copy(toCopy);
             this.name = toCopy.getName();
     }
-    
+
     public class FAQ extends AccountBase {
         private String question;
         private String answer;
@@ -50,6 +55,7 @@ So, to modelise that correctly, I use an interface and generic class/method.
 
 
 And the java modelisation is:
+
 {% highlight java %}
 
     public interface Copiable<E> {
@@ -72,17 +78,17 @@ And the java modelisation is:
         private String name;
 
         @Override
-        public void copy(User toCopy){ 
+        public void copy(User toCopy){
             super.copy(toCopy);
             this.name = toCopy.getName();
     }
-    
+
     public class FAQ extends AccountBase<FAQ> {
         private String question;
         private String answer;
 
         @Override
-        public void copy(FAQ toCopy){ 
+        public void copy(FAQ toCopy){
             super.copy(toCopy);
             this.question = toCopy.getQuestion();
             this.answer = toCopy.getAnswer();
