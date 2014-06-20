@@ -5,7 +5,7 @@ title: Resumé
 
 <div id="slides">
   <div>
-    <p>Mon texte</p>
+    <p>Mon texte autres testx</p>
     <img alt="Mon image" src="/public/git.png" />
   </div>
 </div>

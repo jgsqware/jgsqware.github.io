@@ -92,12 +92,16 @@ h1, h2, h3, h4, h5, h6 {
  *
 */
 #slides div {
-	background: #fff;
+	background: black;
 	height: 100px; /* Égal à la hauteur de l'image */
 	margin: 10px;
 	overflow: hidden;
 	position: relative;
 	width: 100px; /* Égal à la largeur de l'image */
+}
+
+#slides img {
+  background-color: white;
 }
 
 #slides div img {
