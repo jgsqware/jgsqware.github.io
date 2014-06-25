@@ -212,6 +212,45 @@ hr.style-two {
     background-image:     -ms-linear-gradient(left, rgba(105, 158, 188,0), rgba(105, 158, 188,0.75), rgba(105, 158, 188,0));
     background-image:      -o-linear-gradient(left, rgba(105, 158, 188,0), rgba(105, 158, 188,0.75), rgba(105, 158, 188,0));
 }
+
+/** Post Data */
+.date {
+  position:relative; top:.50em; left:-80px;
+  width: 70px;
+  color: rgb(105, 158, 188);
+  display:block;
+  -webkit-transform: scale(2);
+     -moz-transform: scale(2);
+       -o-transform: scale(2);
+          transform: scale(2);
+ }
+
+.day, .month, .year {
+  position: absolute;
+  }
+
+.day {
+  font-size: 100%;
+  top: 15px;
+  left:1px;
+  }
+
+.month {
+  top: 0;
+  left: 0;
+  font-size: 80%;
+  }
+
+.year {
+  top: 10px;
+  right: 15px;
+  font-size: 80%;
+  rotation: -90deg !important;
+  /* ** Hacks ** */
+  -webkit-transform: rotate(-90deg);
+  -moz-transform: rotate(-90deg);
+  }
+
 /*
  * Masthead
  *
@@ -426,7 +465,7 @@ a.sidebar-nav-item:focus {
 .page,
 .post {
   margin-bottom: 1em;
-  margin-top: -4em;
+  margin-top: -2em;
 }
 
 /* Blog post or page title */
