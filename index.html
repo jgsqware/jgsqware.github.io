@@ -7,11 +7,14 @@ title: Home
   {% for post in paginator.posts %}
   <div class="post">
 
-    <span class="post-date">{{ post.date | date_to_string }}</span>
 
+<span class="post-date">{{ post.date | date_to_string }}</span>
     <h1 class="post-title">
+
       <span class="circular_code"> </span>
-      <span ><a href="{{ post.url }}">
+      <span >
+
+        <a href="{{ post.url }}">
         {{ post.title }}
       </a></span>
     </h1>

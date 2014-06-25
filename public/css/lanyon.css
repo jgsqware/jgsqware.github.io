@@ -204,6 +204,7 @@ hr.style-one {
 /* Gradient transparent - color - transparent */
 
 hr.style-two {
+    margin-bottom: 4em;
     border: 0;
     height: 1px;
     background-image: -webkit-linear-gradient(left, rgba(105, 158, 188,0), rgba(105, 158, 188,0.75), rgba(105, 158, 188,0));
@@ -424,7 +425,8 @@ a.sidebar-nav-item:focus {
 
 .page,
 .post {
-  margin-bottom: 4em;
+  margin-bottom: 1em;
+  margin-top: -4em;
 }
 
 /* Blog post or page title */
@@ -442,7 +444,8 @@ a.sidebar-nav-item:focus {
 .post-date {
   display: block;
   font-size: 75%;
-  margin-bottom: -.15rem;
+  /*margin-bottom: -.15rem;*/
+  position:relative; top:63px; left:-100px;
   color: #5C5C5C;
 }
 
