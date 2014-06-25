@@ -9,7 +9,7 @@ permalink:        pretty
 title:            JGG Codr
 tagline:          Codr skills enhancements
 url:              http://juliengarcia.github.io/
-paginate:         1
+paginate:         5
 baseurl:          /
 author:
   name:           Julien Garcia Gonzalez
