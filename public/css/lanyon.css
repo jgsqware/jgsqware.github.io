@@ -172,6 +172,36 @@ span.badges{
   background-size: 100px 100px;
 }
 
+#circular_tag{
+  width: 1.5rem;
+  height: 1.5rem;
+  border-radius: 3rem;
+  -webkit-border-radius: 3rem;
+  -moz-border-radius: 3rem;
+    border-color: white;
+    border-style:solid;
+    border-width:1px;
+  display:inline-block;
+  background-size: 100%;
+}
+.jenkins_tag {
+  background:url('https://wiki.jenkins-ci.org/download/attachments/2916393/logo.png') no-repeat;
+}
+.java_tag {
+  background:url('http://img2.wikia.nocookie.net/__cb20081111001200/egamia/images/6/63/Java_avatar.png') no-repeat;
+}
+.spring_tag, .spring-data_tag, .spring-data-jpa_tag{
+  background:url('http://forum.spring.io/core/image.php?userid=38939&dateline=1378757183') no-repeat;
+}
+.hibernate_tag {
+  background:url('http://www.toubkalit.ma/image_module/hibernate_icon.gif') no-repeat;
+}
+.terminal_tag {
+  background:url('http://macinpoche.fr/wp-content/uploads/2013/06/Terminal.png') no-repeat;
+}
+.maven_tag {
+  background:url('http://1.bp.blogspot.com/_DdKtxEi1Oa8/TORwWOER_nI/AAAAAAAAAGA/xGEZEus43XI/s1600/Abstract+Retro+Font+Design.jpg ') no-repeat;
+}
 
 
 .circular {
