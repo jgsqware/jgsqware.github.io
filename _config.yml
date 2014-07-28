@@ -15,7 +15,7 @@ author:
   name:           Julien Garcia Gonzalez
   url:            https://twitter.com/_garcia_j_
   email:          garcaigonzalez.julien@gmail.com
-description:      Hello, I'm Julien Garcia Gonzalez. <br> I'm currently a Java EE developer. <br> I like the taste of Spring & Hibernate <br> Codr with &hearts;
+description:      "Hello, I'm Julien Garcia Gonzalez. <br> I'm currently a Java EE developer. <br> I like the taste of Spring & Hibernate <br> Codr with &hearts;"
 
 # Custom vars
 version:          1.0.0

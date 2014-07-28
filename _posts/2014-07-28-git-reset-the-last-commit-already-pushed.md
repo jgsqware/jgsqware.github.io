@@ -5,6 +5,7 @@ tagline: When the habits kill the productivity
 date: 2014-07-28
 category: Development; VersionControl
 tags: [Git]
+comments: True
 ---
 
 Here is a tip to reset the last commit of a **Git** repository already pushed to remote.
