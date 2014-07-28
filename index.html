@@ -15,7 +15,9 @@ title: Home
   <span class="month">{{ post.date | date: "%b" }}</span>
   <span class="year">{{ post.date | date: "%Y" }}</span>
 </div>
-<span class="comments_date"><a href="http://juliengarcia.github.io{{ post.url }}#disqus_thread"></a></span>
+<!-- <div class="comments_div">
+<span class="comments_date"><a  href="http://juliengarcia.github.io{{ post.url }}#disqus_thread"></a></span>
+</div> -->
     <h1 class="post-title">
 
       <span class="circular_code"> </span>
@@ -33,6 +35,7 @@ title: Home
 
     {{ post.content }}
   </div>
+  <div class="comments_date"><a  href="http://juliengarcia.github.io{{ post.url }}#disqus_thread"></a></div>
   <hr class="style-two" />
   {% endfor %}
 </div>

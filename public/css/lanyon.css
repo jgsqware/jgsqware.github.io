@@ -248,7 +248,7 @@ hr.style-two {
 
 /** Post Data */
 .date {
-  position:relative; top:.50em; left:-80px;
+  position:relative; top:0.5em; left:-80px;
   width: 70px;
   color: rgb(105, 158, 188);
   display:block;
@@ -283,10 +283,19 @@ hr.style-two {
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
   }
+
+.comments_div{
+
+  position:relative; top:4.7em; left:-104px;
+  width: 100px;
+
+}
 .comments_date {
-  position:relative; top:1em; left:-80px;
-  top:50px;
   font-size: 70%;
+  text-align: right;
+}
+.comments_date a{
+  color: black
 }
 /*
  * Masthead

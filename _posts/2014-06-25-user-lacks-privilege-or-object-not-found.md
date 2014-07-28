@@ -3,7 +3,7 @@ layout: post
 title: "user lacks privilege or object not found: MYCLASS"
 tagline: "Error on creating table with an invalid column definition"
 date: 2014-06-25
-category: Development
+comments: True
 tags: [Java, Hibernate]
 ---
 

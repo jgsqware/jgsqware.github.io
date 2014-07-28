@@ -3,7 +3,7 @@ layout: post
 title: Defining a generic copy method with inheritance
 tagline: "Using &#65124;? extends T&#65125; pattern"
 date: 2014-06-19
-category: Development
+comments: True
 tags: [Java, Generic]
 ---
 
