@@ -284,6 +284,7 @@ hr.style-two {
   -moz-transform: rotate(-90deg);
   }
 .comments_date {
+  position:relative; top:1em; left:-80px;
   top:50px;
   font-size: 70%;
 }
