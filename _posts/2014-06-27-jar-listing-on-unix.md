@@ -3,6 +3,7 @@ layout: post
 title: "List the Jar file content"
 tagline: "Oh god, I always forget that command ..."
 date: 2014-06-27
+disqus_identifier: 2014-06-27-2
 comments: True
 tags: [Java,Terminal]
 ---

@@ -3,6 +3,7 @@ layout: post
 title: "PropertyReferenceException: No property locale found"
 tagline: Cannot initialize Spring Context due to incorrect JPARepository query
 date: 2014-06-24
+disqus_identifier: 2014-06-24-1
 comments: True
 tags: [Java, Spring-Data]
 ---

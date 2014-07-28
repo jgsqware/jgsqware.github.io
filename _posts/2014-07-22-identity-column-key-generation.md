@@ -3,6 +3,7 @@ layout: post
 title: "Error : Cannot use identity column key generation with <union-subclass> ( TABLE_PER_CLASS )"
 tageline: "Id creation on TABLE_PER_CLASS inheritance"
 date: 2014-07-22
+disqus_identifier: 2014-07-22-1
 comments: True
 tags: [Java,Hibernate]
 ---

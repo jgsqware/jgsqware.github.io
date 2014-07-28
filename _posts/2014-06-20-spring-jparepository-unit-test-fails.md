@@ -3,6 +3,7 @@ layout: post
 title: Spring JPARepository Unit Test fails
 tagline: java.lang.IllegalArgumentException A ServletContext is required to configure default servlet handling
 date: 2014-06-20
+disqus_identifier: 2014-06-20-1
 comments: True
 tags: [Spring, Spring-Data-JPA, Unit Test]
 ---

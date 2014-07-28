@@ -3,6 +3,7 @@ layout: post
 title: How to add test dependency from another project
 tagline: Test-Jar Maven Plugin
 date: 2014-06-27
+disqus_identifier: 2014-06-27-1
 comments: True
 tags: [Java, Maven]
 ---

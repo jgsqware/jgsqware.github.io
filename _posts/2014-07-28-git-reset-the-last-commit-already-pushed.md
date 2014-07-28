@@ -3,6 +3,7 @@ layout: post
 title: Git - Reset the last commit already pushed to remote
 tagline: When the habits kill the productivity
 date: 2014-07-28
+disqus_identifier: 2014-07-28-1
 tags: [Git]
 comments: True
 ---
