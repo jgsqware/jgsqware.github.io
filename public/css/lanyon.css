@@ -283,7 +283,10 @@ hr.style-two {
   -webkit-transform: rotate(-90deg);
   -moz-transform: rotate(-90deg);
   }
-
+.comments_date {
+  top:50px;
+  font-size: 70px;
+}
 /*
  * Masthead
  *
