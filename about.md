@@ -1,5 +1,5 @@
 ---
-layout: page
+layout: page_
 title: Resumé
 ---
 
@@ -12,7 +12,7 @@ title: Resumé
 
 <div id="projects">
   {% for collection in site.data.openbadges %}
-     
+
        <div class="badgesCollection">
          <span class="badges">
            <img src="{{ collection.image }}" alt="{{ collection.collection }}">
