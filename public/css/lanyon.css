@@ -221,6 +221,13 @@ span.badges{
 .spring_about_tag{
   background:url('/public/spring-logo.png') no-repeat;
 }
+.symbol_about{
+  font-size: 150%;
+  padding-left: 0.4em;
+}
+.heart{
+  color:#d11229;
+}
 
 
 .circular {

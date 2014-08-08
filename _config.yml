@@ -15,7 +15,7 @@ author:
   name:           Julien Garcia Gonzalez
   url:            https://twitter.com/_garcia_j_
   email:          garciagonzalez.julien@gmail.com
-description:      <div id="about_tag" class='spring_about_tag' ></div> "Spring & Hibernate Codr with &hearts;"
+description:      <span id="about_tag" class='spring_about_tag' ></span><span class='symbol_about'>Coder with <span class="heart">&hearts;</span></span>
 
 # Custom vars
 version:          1.0.0
