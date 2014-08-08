@@ -10,9 +10,6 @@ layout: default
   <span class="month">{{ page.date | date: "%b" }}</span>
   <span class="year">{{ page.date | date: "%Y" }}</span>
 </div>
-<!-- <div class="comments_div">
-<span class="comments_date"><a  href="http://juliengarcia.github.io{{ post.url }}#disqus_thread"></a></span>
-</div> -->
     <h1 class="post-title">
 
       <span class="circular_code"> </span>
@@ -34,17 +31,6 @@ layout: default
     <a class="btn btn-primary" href="http://twitter.com/intent/tweet?text='{{ page.title }}'&url={{ site.url }}{{ page.url }} ">Tweet it</a> | <a class="btn btn-primary" href="http://facebook.com/sharer.php?u={{ site.url }}{{ page.url }} ">Like it</a> | <a class="btn btn-primary" href="https://plus.google.com/share?url={{ site.url }}{{ page.url }} ">+1</a>
   </span>
   {% include comments.html %}
-<!-- <div class="post">
-  <div class="date">
-  <span class="day">{{ page.date | date: "%d" }}</span>
-  <span class="month">{{ page.date | date: "%b" }}</span>
-  <span class="year">{{ page.date | date: "%Y" }}</span>
-</div>
-  <h1 class="post-title">{{ page.title }}</h1>
-  <div class="comments_date"><a  href="http://juliengarcia.github.io{{ page.url }}#disqus_thread " data-disqus-identifier='{{ page.disqus_identifier }}'></a></div>
-  {{ content }}
-  {% include comments.html %}
-</div> -->
 
 <div class="related">
   <h2>Related Posts</h2>
