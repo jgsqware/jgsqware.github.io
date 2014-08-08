@@ -12,7 +12,7 @@ A common exception `java.util.ConcurrentModificationException` is thrown when I 
 
 {% highlight java %}
 for (Integer element : integerSet) {
-    if(element % 2 == 0)
+    if(element % 2 == 0){
         integerSet.remove(element); // Throws java.util.ConcurrentModificationException
     }
 }
@@ -23,7 +23,7 @@ The iterator pattern has a `Iterator.remove()` method that is safe.
 {% highlight java %}
 for (Iterator<Integer> i = integerSet.iterator(); i.hasNext();) {
     Integer element = i.next();
-    if(element % 2 == 0)
+    if(element % 2 == 0){
         i.remove();
     }
 }
