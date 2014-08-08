@@ -8,14 +8,14 @@ permalink:        pretty
 # Setup
 title:            JGG Codr
 tagline:          Codr skills enhancements
-url:              http://juliengarcia.github.io/
+url:              http://juliengarcia.github.io
 paginate:         5
 baseurl:          /
 author:
   name:           Julien Garcia Gonzalez
   url:            https://twitter.com/_garcia_j_
-  email:          garcaigonzalez.julien@gmail.com
-description:      "Hello, I'm Julien Garcia Gonzalez. <br> I'm currently a Java EE developer. <br> I like the taste of Spring & Hibernate <br> Codr with &hearts;"
+  email:          garciagonzalez.julien@gmail.com
+description:      <div id="about_tag" class='spring_about_tag' ></div> "Spring & Hibernate Codr with &hearts;"
 
 # Custom vars
 version:          1.0.0

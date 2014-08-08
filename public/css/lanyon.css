@@ -50,7 +50,13 @@ h1, h2, h3, h4, h5, h6 {
   color: #313131;
   letter-spacing: -.025rem;
 }
+.sharing_social {
 
+  color: #0A6C9D !important;
+  text-align: left !important;
+  font-size: 70% !important;
+  padding-right:35em;
+}
 
 /*
  * Wrapper
@@ -204,6 +210,16 @@ span.badges{
 }
 .git_tag {
   background:url('http://msysgit.github.io/img/git_logo.png ') no-repeat;
+}
+
+#about_tag{
+  width: 1.5rem;
+  height: 1.5rem;
+  display:inline-block;
+  background-size: 100%;
+}
+.spring_about_tag{
+  background:url('/public/spring-logo.png') no-repeat;
 }
 
 
