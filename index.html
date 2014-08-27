@@ -30,7 +30,7 @@ title: Home
     <span class="post-tagline">{{ post.tagline }}</span>
 
     {% for tag in post.tags %}
-      <div id="circular_tag" class="{{ tag | downcase}}_tag" ></div>
+      <div id="circular_tag" class="{{ tag | downcase}}_tag tooltip-right" data-tooltip="{{ tag }}"></div>
      {% endfor %}
 
     {{ post.content }}
