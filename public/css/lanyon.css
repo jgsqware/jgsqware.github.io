@@ -428,6 +428,9 @@ span.badges{
 .jboss_tag {
     background:url('http://www.techsys.fr/new/images/jboss-logo.png ') no-repeat;
 }
+.postgresql_tag {
+    background:url('http://www.renaudguezennec.eu/blog/image/postgresql.png') no-repeat;
+}
 
 #about_tag{
   width: 1.5rem;
