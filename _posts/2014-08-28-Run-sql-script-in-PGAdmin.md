@@ -18,3 +18,4 @@ Then, go the to the path of your script and run it:
 ```mydb=# \i /path/to/your/awesome_script.sql```
 
 And Voilà!
+

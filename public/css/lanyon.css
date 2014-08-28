@@ -431,6 +431,9 @@ span.badges{
 .postgresql_tag {
     background:url('http://www.renaudguezennec.eu/blog/image/postgresql.png') no-repeat;
 }
+.jekyll_tag {
+    background:url('/public/images/jekyll.png') no-repeat;
+}
 
 #about_tag{
   width: 1.5rem;
