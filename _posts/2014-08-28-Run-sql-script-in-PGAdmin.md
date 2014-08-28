@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Run Sql Script in PGAdmn III
+title: Run Sql Script in PGAdmin III
 tagline: 
 date: 2014-08-28
 disqus_identifier: 2014-08-28-1456
