@@ -8,7 +8,7 @@ comments: True
 tags: [PostgreSQL]
 ---
 
-When you have a *\*.sql* file, and you want to run it from [pgAdmin III](www.pgadmin.org/), there is a easy way to do it.
+When you have a *\*.sql* file, and you want to run it from [pgAdmin III](http://www.pgadmin.org/), there is a easy way to do it.
 You can run the *PSQL Console* from within pgAdmin menu *Plugins -> PSQL Console*:
 
 ![PSQL Console](/public/images/psql_console.png)
