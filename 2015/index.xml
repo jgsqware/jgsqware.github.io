@@ -21,7 +21,7 @@
 
 &lt;p&gt;I develop a small script to update your &lt;code&gt;/etc/hosts&lt;/code&gt; with your docker machine ip and a related resolved name.&lt;/p&gt;
 
-&lt;p&gt;You can found in this &lt;a href=&#34;INSERT-GIST&#34;&gt;update-hosts-docker-machine.sh&lt;/a&gt; or here is it:&lt;/p&gt;
+&lt;p&gt;You can found in this &lt;a href=&#34;https://gist.github.com/juliengarcia/9a208ca5cf6590b25150&#34;&gt;update-hosts-docker-machine.sh&lt;/a&gt; or here is it:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/usr/bin/env bash
 #Usage docker-machine-update-hosts.sh hosts.conf
