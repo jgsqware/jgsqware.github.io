@@ -1,0 +1,7 @@
+baseurl: "http://juliengarcia.github.io"
+languageCode: "en-us"
+title: "Rocket Vision"
+
+params:
+  ProfilePicture: "/images/profile.jpg"
+  links:
