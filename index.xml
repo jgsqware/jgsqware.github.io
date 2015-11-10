@@ -6,8 +6,26 @@
     <description>Recent content on Rocket Vision</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 10 Nov 2015 12:15:58 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 10 Nov 2015 14:04:36 +0100</lastBuildDate>
     <atom:link href="http://juliengarcia.github.io/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>docker hosts automatic update</title>
+      <link>http://juliengarcia.github.io/docker-hosts-automatic-update/</link>
+      <pubDate>Tue, 10 Nov 2015 14:04:36 +0100</pubDate>
+      
+      <guid>http://juliengarcia.github.io/docker-hosts-automatic-update/</guid>
+      <description></description>
+    </item>
+    
+    <item>
+      <title>docker tips and tricks</title>
+      <link>http://juliengarcia.github.io/docker-tips-and-tricks/</link>
+      <pubDate>Tue, 10 Nov 2015 14:04:24 +0100</pubDate>
+      
+      <guid>http://juliengarcia.github.io/docker-tips-and-tricks/</guid>
+      <description></description>
+    </item>
     
     <item>
       <title>Install Docker on OSX</title>
