@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>Devops or not devops.</title>
-    <link>http://replace-this-with-your-hugo-site.com/</link>
+    <link>http://juliengarcia.github.io/</link>
     <description>Recent content on Devops or not devops.</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 10 Nov 2015 12:15:58 +0100</lastBuildDate>
-    <atom:link href="http://replace-this-with-your-hugo-site.com/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://juliengarcia.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>Install Docker on OSX</title>
-      <link>http://replace-this-with-your-hugo-site.com/docker-install-osx/</link>
+      <link>http://juliengarcia.github.io/docker-install-osx/</link>
       <pubDate>Tue, 10 Nov 2015 12:15:58 +0100</pubDate>
       
-      <guid>http://replace-this-with-your-hugo-site.com/docker-install-osx/</guid>
+      <guid>http://juliengarcia.github.io/docker-install-osx/</guid>
       <description>
 
 &lt;h1 id=&#34;let-s-put-some-docker-in-your-osx:c37c4d4abc178f0a4b5ad7b30aa416ee&#34;&gt;Let&amp;rsquo;s put some Docker in your OSX&lt;/h1&gt;
@@ -68,10 +68,10 @@ default                  virtualbox   Running   tcp://192.168.99.101:2376
     
     <item>
       <title>Registry - Docker Hub, at Home, for Free!</title>
-      <link>http://replace-this-with-your-hugo-site.com/docker-registry-installation/</link>
+      <link>http://juliengarcia.github.io/docker-registry-installation/</link>
       <pubDate>Mon, 09 Nov 2015 15:35:40 +0100</pubDate>
       
-      <guid>http://replace-this-with-your-hugo-site.com/docker-registry-installation/</guid>
+      <guid>http://juliengarcia.github.io/docker-registry-installation/</guid>
       <description>
 
 &lt;h1 id=&#34;registry-docker-hub-at-home-for-free:c34b9d8e1a9d73777d6418bc254d4972&#34;&gt;Registry - Docker Hub, at Home, for Free!&lt;/h1&gt;
