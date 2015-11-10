@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Docker: Installation on OSX</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.14" />
+  <link href="" rel="alternate" type="application/rss+xml" title="Rocket Vision" />
+  <link href="http://juliengarcia.github.io/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://juliengarcia.github.io/css/hc.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  
+    
+    </head>
+    <body>
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+      <div id = "wrapper">
+
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://juliengarcia.github.io/"><p class="navbar-brand">Rocket Vision</p></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="images/profile.jpg" />
+          <li class="sidebar-brand"><a href="http://juliengarcia.github.io/"><h1 class="brand">Rocket Vision</h1></a><h3></h3></li>
+          <hr />
+					
+          <hr />
+          <div id="social-wrapper">
+           
+           
+           
+           
+         </div>
+       </ul>
+     </div>
+
+
+
+     <div class="container">
+
+
+  <div id="article">
+   <div class="article-title">Docker: Installation on OSX</div>
+   <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2015-11-10</small></p> <hr/>
+   <div class="post">
+     
+
+<h1 id="let-s-put-some-docker-in-your-osx:c37c4d4abc178f0a4b5ad7b30aa416ee">Let&rsquo;s put some Docker in your OSX</h1>
+
+<p>The easier way to install Docker is with the <a href="https://www.docker.com/docker-toolbox">Docker Toolbox</a>.</p>
+
+<p>Docker toolbox install:
+ - Docker Client
+ - Docker Machine
+ - Docker Compose
+ - Docker Kitematic
+ - VirtualBox</p>
+
+<p>You can install Docker Toolbox via <a href="http://brew.sh/">Homebrew</a></p>
+
+<pre><code class="language-bash">&gt; brew install docker-toolbox
+</code></pre>
+
+<p>You can run a Docker terminal with the VM boot2docker started and environment variable configured by running <strong>Docker Quickstart Terminal</strong> app.</p>
+
+<p>Or you can run it by yourself with <strong>Docker Machine</strong></p>
+
+<pre><code class="language-bash"># List Docker Machine available
+
+&gt; docker-machine ls
+NAME            ACTIVE   DRIVER       STATE     URL                         SWARM
+default                  virtualbox   Running   tcp://192.168.99.101:2376
+
+# To start a docker machine akka VM
+# &gt; docker-machine start &lt;DOCKER-MACHINE-NAME&gt;
+&gt; docker-machine start default
+
+# To create a new docker machine
+# docker-machine create --driver=&lt;VM-DRIVER&gt; &lt;NAME-OF-VM&gt;
+# --driver=virtualbox is use in OSX to run with boot2docker
+&gt; docker-machine create --driver=virtualbox registry
+</code></pre>
+
+<p>To allow your docker-client to speak with your docker daemon inside your docker machine <em>you follow me, right?</em>, you need to configure some <strong>environment variables</strong> like <code>DOCKER_HOST=&lt;IP-OF-VM&gt;</code>.</p>
+
+<p>docker-machine help you on that with:</p>
+
+<pre><code class="language-bash">&gt; eval $(docker-machine env virtual-slave)
+
+# If you want to run connect to your vm with a specific shell you can use --shell=&lt;SHELL-NAME&gt;
+
+&gt; eval $(docker-machine env virtual-slave --shell=zsh)
+</code></pre>
+
+   </div>
+ </div>
+
+
+ <a href="https://twitter.com/share" class="twitter-share-button " data-size="small" data-count="none">Tweet</a>
+ <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+ <ul class="pager">
+      &nbsp;<li class="previous"><a href="http://juliengarcia.github.io/2015/11/docker-hosts-automatic-update/"> Docker: Update your hosts with docker-machine ips automatically</a></li>
+     
+</ul>
+
+
+
+    </ul>
+    </div>
+    <footer>
+
+        <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+ 
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/hc.js"></script>
+</body>
+
+</html>
+
