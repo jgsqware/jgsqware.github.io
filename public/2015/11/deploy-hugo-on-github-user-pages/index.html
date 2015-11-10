@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Docker: Update your hosts with docker-machine ips automatically</title>
+  <title>Deploy Hugo on Github user pages</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.14" />
@@ -63,56 +63,58 @@
 
 
   <div id="article">
-   <div class="article-title">Docker: Update your hosts with docker-machine ips automatically</div>
+   <div class="article-title">Deploy Hugo on Github user pages</div>
    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2015-11-10</small></p> <hr/>
    <div class="post">
      
 
-<h1 id="docker-update-your-hosts-with-docker-machine-ips-automatically:4584454c65a244a9bd908e6297804a97">Docker: Update your hosts with docker-machine ips automatically</h1>
+<h1 id="deploy-hugo-on-github-user-pages:a63ae4cd6112f070c57749a3089cca2d">Deploy Hugo on github user pages</h1>
 
-<p>I develop a small script to update your <code>/etc/hosts</code> with your docker machine ip and a related resolved name.</p>
+<p>This blog is deploy on <a href="https://help.github.com/articles/user-organization-and-project-pages/#user--organization-pages">GitHub User Pages</a> with <a href="http://wercker.com/">Wercker</a>.</p>
 
-<p>You can found in this <a href="https://gist.github.com/juliengarcia/9a208ca5cf6590b25150">update-hosts-docker-machine.sh</a> or here is it:</p>
+<p>First, I&rsquo;ve follow the <a href="https://gohugo.io/tutorials/automated-deployments/">Hugo User Guide to deploy with Wercker</a>. But it deploy on Github project pages and not Github User pages. You can use the Hugo user guide first than replace your <code>wercker.yml</code> file with the following one.</p>
 
-<pre><code class="language-bash">#!/usr/bin/env bash
-#Usage docker-machine-update-hosts.sh hosts.conf
-#arg1 is a configuration file with hosts
+<p>I&rsquo;m planning to use Hugo as my personal blog generator. So, i&rsquo;ve created a repository in Github <a href="https://github.com/juliengarcia/rocket-vision">Rocket-Vision</a> that hold my hugo code.</p>
 
-#Remove existing lines from hosts
-while read -r line; do
-    [[ &quot;$line&quot; =~ ^#.*$ ]] &amp;&amp; continue
-  echo &quot;Configuration: $line&quot;
-  IFS='=' read -a configuration &lt;&lt;&lt; &quot;$line&quot;
-  machine=${configuration[0]}
+<p>Then I use Wercker to build and deploy on the <a href="https://github.com/juliengarcia/juliengarcia.github.io">Github User Page repository</a>.</p>
 
-  IFS=',' read -a hosts &lt;&lt;&lt; &quot;${configuration[1]}&quot;
+<h2 id="configure-wercker-file:a63ae4cd6112f070c57749a3089cca2d">Configure Wercker file</h2>
 
-  DOCKER_IP=$(docker-machine ip $machine)
-  for host in &quot;${hosts[@]}&quot;; do
-    echo &quot;Adding $DOCKER_IP  $host&quot;
-    sudo bash -c &quot;sed -i '' '/^192\.168\.99\.[[:digit:]]\{0,3\}[[:space:]]*$host/d' /etc/hosts&quot;
-    sudo bash -c &quot;echo '$DOCKER_IP  $host' &gt;&gt; /etc/hosts&quot;
-  done
+<p>To build and deploy on Wercker, you need a <code>wercker.yml</code> configuration file.</p>
 
-done &lt; &quot;$1&quot;
+<h3 id="build-steps:a63ae4cd6112f070c57749a3089cca2d">Build steps</h3>
+
+<p>I use the <code>arjen/hugo-build@1.6.1</code> step to build Hugo.</p>
+
+<p>I&rsquo;ve defined the theme: <em>herring-cove</em> and decide to not publish the drafts</p>
+
+<h3 id="deploy-steps:a63ae4cd6112f070c57749a3089cca2d">Deploy steps</h3>
+
+<p>First, I need to install <strong>Git</strong> to be able to push in the right repository. It&rsquo;s done by the <code>install-packages</code> step.</p>
+
+<p>Then, I need to push into a different repository than build one. So, I use the <code>leipert/git-push@0.7.6</code> step.</p>
+
+<p>I configure the git token (<em>gh_oauth</em>) and destination repository (<em>repo: juliengarcia/juliengarcia.github.io</em>)</p>
+
+<pre><code class="language-yaml">box: debian
+build:
+  steps:
+    - arjen/hugo-build@1.6.1:
+      version: &quot;0.14&quot;
+      theme: herring-cove
+      flags: --buildDrafts=false
+
+deploy:
+  steps:
+    - install-packages:
+      packages: git
+    - leipert/git-push@0.7.6:
+      gh_oauth: $GIT_TOKEN
+      repo: juliengarcia/juliengarcia.github.io
+
 </code></pre>
 
-<p>You have to use it with a configuration file, <code>hosts.conf</code>.</p>
-
-<pre><code># Pattern
-# &lt;docker-machine name&gt;=&lt;host name&gt;,&lt;host name&gt;,...
-registry=docker-registry
-</code></pre>
-
-<p>Then, run it with</p>
-
-<pre><code class="language-bash">&gt; update-hosts-docker-machine.sh hosts.conf
-</code></pre>
-
-<p>On OSX, you need to flush the dns cache</p>
-
-<pre><code class="language-bash">&gt; dscacheutil -flushcache
-</code></pre>
+<p>Now, on every push on Rocket-Vision repository, the hugo website is build then deploy on the juliengarcia.github.io repository and available on <a href="http://juliengarcia.github.io">http://juliengarcia.github.io</a></p>
 
    </div>
  </div>
@@ -122,8 +124,8 @@ registry=docker-registry
  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
  <ul class="pager">
-      &nbsp;<li class="previous"><a href="http://juliengarcia.github.io/2015/11/deploy-hugo-on-github-user-pages/"> Deploy Hugo on Github user pages</a></li>
-      &nbsp;<li class="next"><a href="http://juliengarcia.github.io/2015/11/docker-install-osx/"> Docker: Installation on OSX</a></li>
+     
+      &nbsp;<li class="next"><a href="http://juliengarcia.github.io/2015/11/docker-hosts-automatic-update/"> Docker: Update your hosts with docker-machine ips automatically</a></li>
 </ul>
 
 

@@ -6,8 +6,66 @@
     <description>Recent content in 2015s on Rocket Vision</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 10 Nov 2015 14:04:36 +0100</lastBuildDate>
+    <lastBuildDate>Tue, 10 Nov 2015 14:07:50 +0100</lastBuildDate>
     <atom:link href="http://juliengarcia.github.io/2015/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Deploy Hugo on Github user pages</title>
+      <link>http://juliengarcia.github.io/2015/11/deploy-hugo-on-github-user-pages/</link>
+      <pubDate>Tue, 10 Nov 2015 14:07:50 +0100</pubDate>
+      
+      <guid>http://juliengarcia.github.io/2015/11/deploy-hugo-on-github-user-pages/</guid>
+      <description>
+
+&lt;h1 id=&#34;deploy-hugo-on-github-user-pages:a63ae4cd6112f070c57749a3089cca2d&#34;&gt;Deploy Hugo on github user pages&lt;/h1&gt;
+
+&lt;p&gt;This blog is deploy on &lt;a href=&#34;https://help.github.com/articles/user-organization-and-project-pages/#user--organization-pages&#34;&gt;GitHub User Pages&lt;/a&gt; with &lt;a href=&#34;http://wercker.com/&#34;&gt;Wercker&lt;/a&gt;.&lt;/p&gt;
+
+&lt;p&gt;First, I&amp;rsquo;ve follow the &lt;a href=&#34;https://gohugo.io/tutorials/automated-deployments/&#34;&gt;Hugo User Guide to deploy with Wercker&lt;/a&gt;. But it deploy on Github project pages and not Github User pages. You can use the Hugo user guide first than replace your &lt;code&gt;wercker.yml&lt;/code&gt; file with the following one.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;m planning to use Hugo as my personal blog generator. So, i&amp;rsquo;ve created a repository in Github &lt;a href=&#34;https://github.com/juliengarcia/rocket-vision&#34;&gt;Rocket-Vision&lt;/a&gt; that hold my hugo code.&lt;/p&gt;
+
+&lt;p&gt;Then I use Wercker to build and deploy on the &lt;a href=&#34;https://github.com/juliengarcia/juliengarcia.github.io&#34;&gt;Github User Page repository&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&#34;configure-wercker-file:a63ae4cd6112f070c57749a3089cca2d&#34;&gt;Configure Wercker file&lt;/h2&gt;
+
+&lt;p&gt;To build and deploy on Wercker, you need a &lt;code&gt;wercker.yml&lt;/code&gt; configuration file.&lt;/p&gt;
+
+&lt;h3 id=&#34;build-steps:a63ae4cd6112f070c57749a3089cca2d&#34;&gt;Build steps&lt;/h3&gt;
+
+&lt;p&gt;I use the &lt;code&gt;arjen/hugo-build@1.6.1&lt;/code&gt; step to build Hugo.&lt;/p&gt;
+
+&lt;p&gt;I&amp;rsquo;ve defined the theme: &lt;em&gt;herring-cove&lt;/em&gt; and decide to not publish the drafts&lt;/p&gt;
+
+&lt;h3 id=&#34;deploy-steps:a63ae4cd6112f070c57749a3089cca2d&#34;&gt;Deploy steps&lt;/h3&gt;
+
+&lt;p&gt;First, I need to install &lt;strong&gt;Git&lt;/strong&gt; to be able to push in the right repository. It&amp;rsquo;s done by the &lt;code&gt;install-packages&lt;/code&gt; step.&lt;/p&gt;
+
+&lt;p&gt;Then, I need to push into a different repository than build one. So, I use the &lt;code&gt;leipert/git-push@0.7.6&lt;/code&gt; step.&lt;/p&gt;
+
+&lt;p&gt;I configure the git token (&lt;em&gt;gh_oauth&lt;/em&gt;) and destination repository (&lt;em&gt;repo: juliengarcia/juliengarcia.github.io&lt;/em&gt;)&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;box: debian
+build:
+  steps:
+    - arjen/hugo-build@1.6.1:
+      version: &amp;quot;0.14&amp;quot;
+      theme: herring-cove
+      flags: --buildDrafts=false
+
+deploy:
+  steps:
+    - install-packages:
+      packages: git
+    - leipert/git-push@0.7.6:
+      gh_oauth: $GIT_TOKEN
+      repo: juliengarcia/juliengarcia.github.io
+
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Now, on every push on Rocket-Vision repository, the hugo website is build then deploy on the juliengarcia.github.io repository and available on &lt;a href=&#34;http://juliengarcia.github.io&#34;&gt;http://juliengarcia.github.io&lt;/a&gt;&lt;/p&gt;
+</description>
+    </item>
     
     <item>
       <title>Docker: Update your hosts with docker-machine ips automatically</title>
