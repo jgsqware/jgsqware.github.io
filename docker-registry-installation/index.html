@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Registry - Docker Hub, at Home, for Free!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.14" />
+  <link href="" rel="alternate" type="application/rss+xml" title="Devops or not devops." />
+  <link href="http://replace-this-with-your-hugo-site.com//css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://replace-this-with-your-hugo-site.com//css/hc.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  
+    
+    </head>
+    <body>
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+      <div id = "wrapper">
+
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://replace-this-with-your-hugo-site.com//"><p class="navbar-brand">Devops or not devops.</p></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="pathOrUrlToImage" />
+          <li class="sidebar-brand"><a href="http://replace-this-with-your-hugo-site.com//"><h1 class="brand">Devops or not devops.</h1></a><h3></h3></li>
+          <hr />
+					
+          <hr />
+          <div id="social-wrapper">
+           
+           
+           
+           
+         </div>
+       </ul>
+     </div>
+
+
+
+     <div class="container">
+
+
+  <div id="article">
+   <div class="article-title">Registry - Docker Hub, at Home, for Free!</div>
+   <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2015-11-09</small></p> <hr/>
+   <div class="post">
+     
+
+<h1 id="registry-docker-hub-at-home-for-free:c34b9d8e1a9d73777d6418bc254d4972">Registry - Docker Hub, at Home, for Free!</h1>
+
+<blockquote>
+<p>Or how to have our docker registry hub locally
+Due to the slow network, we need to find a way to download docker images from local network instead of Docker Hub.</p>
+</blockquote>
+
+<p>This post is related to OSX docker-machine version. It&rsquo;s almost the same on linux box.</p>
+
+<h2 id="let-s-run-that-s-folk-s:c34b9d8e1a9d73777d6418bc254d4972">Let&rsquo;s Run that&rsquo;s folk&rsquo;s!</h2>
+
+<p>Docker offers his registry as a docker image. Nice guy!</p>
+
+<p>To start a registry, latest version, simply run</p>
+
+<pre><code class="language-bash">&gt; docker run -p 5000:5000 --name registry registry:2
+</code></pre>
+
+<p>It will run, but will <strong>not persist</strong> data when the container will stopped.
+So we will use <a href="Docker-Compose link">docker-compose</a>, Docker-compose help you to manage run of multiple container.</p>
+
+<pre><code class="language-yaml"># data volume container
+# The container is used to store data, backup and restore
+# TODO: Change to alpine images, to get a smaller one
+storage:
+  image: busybox
+  volumes:
+    - /var/lib/registry
+  command: &quot;true&quot;
+
+# Caching Container
+# Should be use to cache registry and enhance velocity of registry
+# TODO: reactivate it
+
+# cache:
+#   image: redis
+
+# Registry container
+# This container handle the registry itself.
+# Is running and expose 5000 port
+# It use sqlalchemy as search engine. It's needed by frontend
+
+backend:
+  image: registry:2
+  ports:
+    - 5000:5000
+  links:
+    # - cache
+    - storage
+  volumes_from:
+    - storage
+  environment:
+    SETTINGS_FLAVOR: local
+    STORAGE_PATH: /var/lib/registry
+    SEARCH_BACKEND: sqlalchemy
+    # CACHE_REDIS_HOST: cache
+    # CACHE_REDIS_PORT: 6379
+    # CACHE_LRU_REDIS_HOST: cache
+    # CACHE_LRU_REDIS_PORT: 6379
+
+# Frontend container
+# Deploy a Frontend for registry.
+# You can browse, delete,... your repository
+# Update ENV_DOCKER_REGISTRY_HOST with the ip of your docker-machine: docker-machine ip &lt;MACHINE_NAME&gt;
+# TODO: map URL to backend
+
+frontend:
+  image: konradkleine/docker-registry-frontend:v2
+  ports:
+    - 5080:80
+  environment:
+    ENV_DOCKER_REGISTRY_HOST: 192.168.99.100
+    ENV_DOCKER_REGISTRY_PORT: 5000
+
+</code></pre>
+
+<blockquote>
+<p>Caching through Redis is in place but not enabled actually
+I need to add the restart-always in docker-compose</p>
+</blockquote>
+
+<p>Now run your docker-compose file to start your container.</p>
+
+<pre><code class="language-bash"># Run docker-compose up -d to start all container
+# -d is for running container as daemon
+
+&gt; docker-compose up -d
+</code></pre>
+
+<p>Your own docker registry is now available:
+- you can <strong>pull*, **push</strong>, <strong>search</strong> repository on <IP-OF-DOCKER>:5000
+- you can browse the repository on <IP-OF-DOCKER>:5080</p>
+
+<!-- TODO insert UI screenshot-->
+
+<h2 id="everywhere-you-want-it-everywhere:c34b9d8e1a9d73777d6418bc254d4972">Everywhere&hellip; You want it everywhere</h2>
+
+<p>You need to open the vm port 5080 and 5000 to put your registry on the network.</p>
+
+<pre><code class="language-bash"># use VBoxManage controlvm &lt;VM-NAME&gt; natpf1 &lt;RULE-NAME&gt;,tcp,&lt;INTERFACE IP&gt;,&lt;VM-PORT-TO-OPEN&gt;,,&lt;DOCKER-PORT-TO-MAP&gt;
+# Here, we are creating a rule registry in vm registry, mapping the docker port 5000 to the vm port 5000 on every interface
+
+&gt; VBoxManage controlvm registry natpf1 registry,tcp,0.0.0.0,5000,,5000
+&gt; VBoxManage controlvm registry natpf1 registry,tcp,0.0.0.0,5080,,5080
+</code></pre>
+
+<p>Now, you access over the network with:
+- repository: on <IP-OF-HOST>:5000
+- UI: on <IP-OF-HOST>:5080</p>
+
+<h2 id="and-now-action:c34b9d8e1a9d73777d6418bc254d4972">And now&hellip; Action!</h2>
+
+<h3 id="allow-connection-to-insecure-registry:c34b9d8e1a9d73777d6418bc254d4972">Allow connection to insecure registry</h3>
+
+<p>As the registry is not secure by certificate actually (<em>it will be in another story</em>),
+we need to tell docker to allow communication with this insecure registry.</p>
+
+<p>It can be done by adding <code>--insecure-registry=&lt;IP-OF-REGISTRY&gt;:&lt;PORT-OF-REGISTRY&gt;</code> in the boot2docker profile.</p>
+
+<p>So,</p>
+
+<pre><code class="language-bash"># SSH your docker-machine
+# docker-machine ssh &lt;DOCKER-MACHINE-NAME&gt;
+&gt; docker-machine ssh registry
+
+# Add docker-registry as resolved name in /etc/hosts
+# It will be more user-friendly
+&gt; sudo vi /etc/hosts
+&lt;IP OF Registry&gt; docker-registry
+# quit vi with :wq to save file
+
+# Open in vi the boot2docker profile.
+# profile is the configuration file used by docker when it start in boot2docker
+&gt; sudo vi /var/lib/boot2docker/profile
+
+# Add line '--insecure-registry docker-registry:5000' in **EXTRA_ARGS**
+EXTRA_ARGS='
+--label provider=virtualbox
+--insecure-registry docker-registry:5000
+'
+# quit vi with :wq to save file
+
+# Restart docker
+&gt; sudo /etc/init.d/docker restart
+# Quit docker machine by CTRL-D
+
+</code></pre>
+
+<h4 id="errors-what:c34b9d8e1a9d73777d6418bc254d4972">Errors&hellip; What?</h4>
+
+<p>If you try to access your insecure registry without define it as insecure-registry, you will received the following error when you will try to <em>push/pull</em></p>
+
+<pre><code class="language-bash">&gt; docker pull 192.168.99.101:5000/registry
+     unable to ping registry endpoint https://192.168.99.101:5000/v0/
+       v2 ping attempt failed with error: Get https://192.168.99.101:5000/v2/: tls: oversized record received with length 20527
+         v1 ping attempt failed with error: Get https://192.168.99.101:5000/v1/_ping: tls: oversized record received with length 20527
+</code></pre>
+
+<p>Sometimes, docker run out of his mind when restarting
+You can see it in log, with last line as</p>
+
+<pre><code class="language-bash"># In your docker machine. Remember, SSH things.
+&gt; tail -f /var/log/docker.log
+level=fatal msg=&quot;Shutting down due to ServeAPI error: listen tcp 0.0.0.0:2376: bind: address already in use&quot;
+</code></pre>
+
+<p>If you see that, just kill docker and start it again</p>
+
+<pre><code class="language-bash">&gt; sudo killall -9 docker
+&gt; sudo /etc/init.d/docker start
+</code></pre>
+
+<p>New, it should be ok</p>
+
+<pre><code class="language-bash">&gt; tail -f /var/log/docker.log
+level=info msg=&quot;Daemon has completed initialization&quot;
+level=info msg=&quot;Docker daemon&quot; commit=f4bf5c7 execdriver=native-0.2 graphdriver=aufs version=1.8.3
+</code></pre>
+
+<h3 id="push-image:c34b9d8e1a9d73777d6418bc254d4972">Push image</h3>
+
+<p>Now, to <strong>push</strong> images to your own docker registry, you have to tag your image with the docker registry url in it</p>
+
+<pre><code class="language-bash"># docker tag &lt;IMAGE-NAME:?tag&gt; &lt;REGISTRY-IP&gt;:&lt;PORT&gt;/&lt;IMAGE-NAME:?tag&gt;
+&gt; docker tag registry docker-registry:5000/registry
+
+</code></pre>
+
+<p>Now you can push it</p>
+
+<pre><code class="language-bash"># docker push &lt;TAG-WITH-REPO-URL&gt;
+&gt; docker push docker-registry:5000/registry
+</code></pre>
+
+<h3 id="pull-image:c34b9d8e1a9d73777d6418bc254d4972">Pull image</h3>
+
+<p>To <strong>pull</strong> images from your own docker registry, you have to pull with the docker registry url in it</p>
+
+<pre><code class="language-bash"># docker pull &lt;REGISTRY-IP&gt;:&lt;PORT&gt;/&lt;IMAGE-NAME:?tag&gt;
+&gt; docker pull docker-registry:5000/registry
+</code></pre>
+
+<h2 id="backup-restore:c34b9d8e1a9d73777d6418bc254d4972">Backup &amp; Restore</h2>
+
+<h3 id="backup-registry-data:c34b9d8e1a9d73777d6418bc254d4972">Backup registry data</h3>
+
+<p>As we have create a <a href="http://docs.docker.com/engine/userguide/dockervolumes/">Data Volume Container</a>, we can backup the folder where the registry save its data to a tar file easily.</p>
+
+<p>We will run a new container and mount volumes from registry data container, then mount the local folder to <code>/backup</code> in the container. Then, we will compress the registry data to a tarball.</p>
+
+<pre><code class="language-bash">&gt; docker run --volumes-from registry_storage_1 -v $(pwd):/backup ubuntu sh -c &quot;cd /var/lib/registry &amp;&amp; tar cvf /backup/registry-data.tar .&quot;
+</code></pre>
+
+<p>You have now a file <code>registry-data.tar</code> in your local folder.</p>
+
+<h3 id="restore-registry-data:c34b9d8e1a9d73777d6418bc254d4972">Restore registry data</h3>
+
+<p>You can now restore the previously backuped registry data to a new registry data container.</p>
+
+<p>So after running the docker-compose, you will have a registry data container but it will be empty. Then, you will have to uncompress the <code>registry-data.tar</code> in the corresponding directory in the registry data container.</p>
+
+<p>We will run a new container and mount volumes from registry data container, and mount the local folder to <code>/backup</code>in the container. Then, we will decompress the registry data to the registry data folder.</p>
+
+<pre><code class="language-bash">&gt; docker run --volumes-from registry_storage_1 -v $(pwd):/backup ubuntu sh -c &quot;cd /var/lib/registry &amp;&amp; tar xvf /backup/registry-data.tar&quot;
+</code></pre>
+
+<p>New, you will can check your repository UI url, your backuped images are restored.</p>
+
+   </div>
+ </div>
+
+
+ <a href="https://twitter.com/share" class="twitter-share-button " data-size="small" data-count="none">Tweet</a>
+ <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+ <ul class="pager">
+      &nbsp;<li class="previous"><a href="http://replace-this-with-your-hugo-site.com/docker-install-osx/"> Install Docker on OSX</a></li>
+     
+</ul>
+
+
+
+    </ul>
+    </div>
+    <footer>
+
+        <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+ 
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/hc.js"></script>
+</body>
+
+</html>
+
