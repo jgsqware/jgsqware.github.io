@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Deploy Hugo on Github user pages</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.14" />
+  <link href="" rel="alternate" type="application/rss+xml" title="Rocket Vision" />
+  <link href="http://juliengarcia.github.io/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://juliengarcia.github.io/css/hc.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  
+    
+    </head>
+    <body>
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+      <div id = "wrapper">
+
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://juliengarcia.github.io/"><p class="navbar-brand">Rocket Vision</p></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/images/profile.jpg" />
+          <li class="sidebar-brand"><a href="http://juliengarcia.github.io/"><h1 class="brand">Rocket Vision</h1></a><h3></h3></li>
+          <hr />
+					
+          <hr />
+          <div id="social-wrapper">
+           
+           
+           
+           
+         </div>
+       </ul>
+     </div>
+
+
+
+     <div class="container">
+
+
+  <div id="article">
+   <div class="article-title">Deploy Hugo on Github user pages</div>
+   <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2015-11-10</small></p> <hr/>
+   <div class="post">
+     
+
+<h1 id="deploy-hugo-on-github-user-pages:a63ae4cd6112f070c57749a3089cca2d">Deploy Hugo on github user pages</h1>
+
+<p>This blog is deploy on <a href="https://help.github.com/articles/user-organization-and-project-pages/#user--organization-pages">GitHub User Pages</a> with <a href="http://wercker.com/">Wercker</a>.</p>
+
+<p>First, I&rsquo;ve follow the <a href="https://gohugo.io/tutorials/automated-deployments/">Hugo User Guide to deploy with Wercker</a>. But it deploy on Github project pages and not Github User pages. You can use the Hugo user guide first than replace your <code>wercker.yml</code> file with the following one.</p>
+
+<p>I&rsquo;m planning to use Hugo as my personal blog generator. So, i&rsquo;ve created a repository in Github <a href="https://github.com/juliengarcia/rocket-vision">Rocket-Vision</a> that hold my hugo code.</p>
+
+<p>Then I use Wercker to build and deploy on the <a href="https://github.com/juliengarcia/juliengarcia.github.io">Github User Page repository</a>.</p>
+
+<h2 id="configure-wercker-file:a63ae4cd6112f070c57749a3089cca2d">Configure Wercker file</h2>
+
+<p>To build and deploy on Wercker, you need a <code>wercker.yml</code> configuration file.</p>
+
+<h3 id="build-steps:a63ae4cd6112f070c57749a3089cca2d">Build steps</h3>
+
+<p>I use the <code>arjen/hugo-build@1.6.1</code> step to build Hugo.</p>
+
+<p>I&rsquo;ve defined the theme: <em>herring-cove</em> and decide to not publish the drafts</p>
+
+<h3 id="deploy-steps:a63ae4cd6112f070c57749a3089cca2d">Deploy steps</h3>
+
+<p>First, I need to install <strong>Git</strong> to be able to push in the right repository. It&rsquo;s done by the <code>install-packages</code> step.</p>
+
+<p>Then, I need to push into a different repository than build one. So, I use the <code>leipert/git-push@0.7.6</code> step.</p>
+
+<p>I configure the git token (<em>gh_oauth</em>) and destination repository (<em>repo: juliengarcia/juliengarcia.github.io</em>)</p>
+
+<pre><code class="language-yaml">box: debian
+build:
+  steps:
+    - arjen/hugo-build@1.6.1:
+      version: &quot;0.14&quot;
+      theme: herring-cove
+      flags: --buildDrafts=false
+
+deploy:
+  steps:
+    - install-packages:
+      packages: git
+    - leipert/git-push@0.7.6:
+      gh_oauth: $GIT_TOKEN
+      repo: juliengarcia/juliengarcia.github.io
+
+</code></pre>
+
+<p>Now, on every push on Rocket-Vision repository, the hugo website is build then deploy on the juliengarcia.github.io repository and available on <a href="http://juliengarcia.github.io">http://juliengarcia.github.io</a></p>
+
+   </div>
+ </div>
+
+
+ <a href="https://twitter.com/share" class="twitter-share-button " data-size="small" data-count="none">Tweet</a>
+ <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+ <ul class="pager">
+     
+      &nbsp;<li class="next"><a href="http://juliengarcia.github.io/2015/11/docker-hosts-automatic-update/"> Docker: Update your hosts with docker-machine ips automatically</a></li>
+</ul>
+
+
+
+    </ul>
+    </div>
+    <footer>
+
+        <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+ 
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/hc.js"></script>
+</body>
+
+</html>
+
