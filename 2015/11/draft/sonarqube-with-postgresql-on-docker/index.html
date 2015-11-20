@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>SonarQube with PostgreSQL on Docker</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.14" />
+  <link href="" rel="alternate" type="application/rss+xml" title="JG sQware" />
+  <link href="http://juliengarcia.github.io/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://juliengarcia.github.io/css/hc.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  
+    
+    </head>
+    <body>
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+      <div id = "wrapper">
+
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://juliengarcia.github.io/"><p class="navbar-brand">JG sQware</p></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+					
+					<li><a href="http://juliengarcia.github.io/">Home </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/images/profile.jpg" />
+          <li class="sidebar-brand"><a href="http://juliengarcia.github.io/"><h1 class="brand">JG sQware</h1></a><h3></h3></li>
+          <hr />
+					
+						<li><a href="http://juliengarcia.github.io/">Home </a></li>
+					
+          <hr />
+          <div id="social-wrapper">
+           <li> <a href="https://twitter.com/JuGarciaGonzale"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+           
+           <li> <a href="https://github.com/juliengarcia"><i class="fa fa-github-square"></i> github</a> </li>
+         </div>
+       </ul>
+     </div>
+
+
+
+     <div class="container">
+
+
+  <div id="article">
+   <div class="article-title">SonarQube with PostgreSQL on Docker</div>
+   <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2015-11-20</small></p> <hr/>
+   <div class="post">
+     
+
+<h1 id="run-sonarqube-on-postgresql:109f71eb4cb170550111d782491e538d">Run SonarQube on PostgreSQL</h1>
+
+<p>Use this <code>docker-compose.yml</code></p>
+
+<pre><code class="language-yaml">sonarqube:
+  image: sonarqube
+  ports:
+   - &quot;9000:9000&quot;
+   - &quot;5432:5432&quot;
+  links:
+    - db:db
+  environment:
+   - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar
+
+db:
+  image: postgres
+  environment:
+   - POSTGRES_USER=sonar
+   - POSTGRES_PASSWORD=sonar
+</code></pre>
+
+<p>then</p>
+
+<pre><code class="language-bash">&gt; docker-compose up -d
+</code></pre>
+
+<p>Then your SonarQube instance is available on <code>&lt;DOCKER-MACHINE-IP&gt;:9000</code>.</p>
+
+<h1 id="analyse-your-project:109f71eb4cb170550111d782491e538d">Analyse your project</h1>
+
+<pre><code class="language-bash">&gt; mvn sonar:sonar \
+  -Dsonar.host.url=http://&lt;DOCKER-MACHINE-IP&gt;:9000 \
+  -Dsonar.jdbc.url=jdbc:postgresql://&lt;DOCKER-MACHINE-IP&gt;/sonar
+</code></pre>
+
+<h1 id="backup-sonar-data:109f71eb4cb170550111d782491e538d">Backup Sonar data</h1>
+
+<pre><code class="language-bash">&gt; docker run --rm --link sonar_db_1:db -v $(pwd):/data -e PGPASSWORD=&quot;sonar&quot; postgres-backup -h db -U sonar -f /data/sonar_db_backup.sql
+</code></pre>
+
+<h1 id="restore-sonar-data:109f71eb4cb170550111d782491e538d">Restore Sonar data</h1>
+
+<pre><code class="language-bash">&gt; docker run --rm --link sonar_db_1:db -v $(pwd):/data -e PGPASSWORD=&quot;sonar&quot; postgres-restore -h db -U sonar -f /data/sonar_db_backup.sql
+</code></pre>
+
+   </div>
+ </div>
+
+
+ <a href="https://twitter.com/share" class="twitter-share-button " data-size="small" data-count="none">Tweet</a>
+ <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+ <ul class="pager">
+     
+      &nbsp;<li class="next"><a href="http://juliengarcia.github.io/2015/11/docker-registry-installation/"> Registry - Docker Hub, at Home, for Free!</a></li>
+</ul>
+
+
+
+    </ul>
+    </div>
+    <footer>
+
+        <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+ 
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/hc.js"></script>
+</body>
+
+</html>
+

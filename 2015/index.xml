@@ -6,8 +6,63 @@
     <description>Recent content in 2015s on JG sQware</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Tue, 10 Nov 2015 11:00:00 +0100</lastBuildDate>
+    <lastBuildDate>Fri, 20 Nov 2015 11:52:33 +0100</lastBuildDate>
     <atom:link href="http://juliengarcia.github.io/2015/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>SonarQube with PostgreSQL on Docker</title>
+      <link>http://juliengarcia.github.io/2015/11/draft/sonarqube-with-postgresql-on-docker/</link>
+      <pubDate>Fri, 20 Nov 2015 11:52:33 +0100</pubDate>
+      
+      <guid>http://juliengarcia.github.io/2015/11/draft/sonarqube-with-postgresql-on-docker/</guid>
+      <description>
+
+&lt;h1 id=&#34;run-sonarqube-on-postgresql:109f71eb4cb170550111d782491e538d&#34;&gt;Run SonarQube on PostgreSQL&lt;/h1&gt;
+
+&lt;p&gt;Use this &lt;code&gt;docker-compose.yml&lt;/code&gt;&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;sonarqube:
+  image: sonarqube
+  ports:
+   - &amp;quot;9000:9000&amp;quot;
+   - &amp;quot;5432:5432&amp;quot;
+  links:
+    - db:db
+  environment:
+   - SONARQUBE_JDBC_URL=jdbc:postgresql://db:5432/sonar
+
+db:
+  image: postgres
+  environment:
+   - POSTGRES_USER=sonar
+   - POSTGRES_PASSWORD=sonar
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;then&lt;/p&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;gt; docker-compose up -d
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;p&gt;Then your SonarQube instance is available on &lt;code&gt;&amp;lt;DOCKER-MACHINE-IP&amp;gt;:9000&lt;/code&gt;.&lt;/p&gt;
+
+&lt;h1 id=&#34;analyse-your-project:109f71eb4cb170550111d782491e538d&#34;&gt;Analyse your project&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;gt; mvn sonar:sonar \
+  -Dsonar.host.url=http://&amp;lt;DOCKER-MACHINE-IP&amp;gt;:9000 \
+  -Dsonar.jdbc.url=jdbc:postgresql://&amp;lt;DOCKER-MACHINE-IP&amp;gt;/sonar
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;backup-sonar-data:109f71eb4cb170550111d782491e538d&#34;&gt;Backup Sonar data&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;gt; docker run --rm --link sonar_db_1:db -v $(pwd):/data -e PGPASSWORD=&amp;quot;sonar&amp;quot; postgres-backup -h db -U sonar -f /data/sonar_db_backup.sql
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;h1 id=&#34;restore-sonar-data:109f71eb4cb170550111d782491e538d&#34;&gt;Restore Sonar data&lt;/h1&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;gt; docker run --rm --link sonar_db_1:db -v $(pwd):/data -e PGPASSWORD=&amp;quot;sonar&amp;quot; postgres-restore -h db -U sonar -f /data/sonar_db_backup.sql
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>Registry - Docker Hub, at Home, for Free!</title>
