@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.14" />
-  <link href="" rel="alternate" type="application/rss+xml" title="Rocket Vision" />
+  <link href="" rel="alternate" type="application/rss+xml" title="JG sQware" />
   <link href="http://juliengarcia.github.io/css/bootstrap.min.css" rel="stylesheet">
   <link href="http://juliengarcia.github.io/css/hc.css" rel="stylesheet">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -27,11 +27,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="http://juliengarcia.github.io/"><p class="navbar-brand">Rocket Vision</p></a>
+          <a href="http://juliengarcia.github.io/"><p class="navbar-brand">JG sQware</p></a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 					
+					
+					<li><a href="http://juliengarcia.github.io/">Home </a></li>
 					
           </ul>
         </div>
@@ -44,15 +46,17 @@
        <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
 					<img src="/images/profile.jpg" />
-          <li class="sidebar-brand"><a href="http://juliengarcia.github.io/"><h1 class="brand">Rocket Vision</h1></a><h3></h3></li>
+          <li class="sidebar-brand"><a href="http://juliengarcia.github.io/"><h1 class="brand">JG sQware</h1></a><h3></h3></li>
           <hr />
+					
+						<li><a href="http://juliengarcia.github.io/">Home </a></li>
 					
           <hr />
           <div id="social-wrapper">
+           <li> <a href="https://twitter.com/JuGarciaGonzale"><i class="fa fa-twitter-square"></i> @twitter</a></li>
            
            
-           
-           
+           <li> <a href="https://github.com/juliengarcia"><i class="fa fa-github-square"></i> github</a> </li>
          </div>
        </ul>
      </div>
@@ -66,18 +70,21 @@
    <div class="article-title">Docker: Installation on OSX</div>
    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2015-11-10</small></p> <hr/>
    <div class="post">
-     
-
-<h1 id="let-s-put-some-docker-in-your-osx:c37c4d4abc178f0a4b5ad7b30aa416ee">Let&rsquo;s put some Docker in your OSX</h1>
+     <blockquote>
+<p>Let&rsquo;s put some Docker in your OSX</p>
+</blockquote>
 
 <p>The easier way to install Docker is with the <a href="https://www.docker.com/docker-toolbox">Docker Toolbox</a>.</p>
 
-<p>Docker toolbox install:
- - Docker Client
- - Docker Machine
- - Docker Compose
- - Docker Kitematic
- - VirtualBox</p>
+<p>Docker toolbox install:</p>
+
+<ul>
+<li>Docker Client</li>
+<li>Docker Machine</li>
+<li>Docker Compose</li>
+<li>Docker Kitematic</li>
+<li>VirtualBox</li>
+</ul>
 
 <p>You can install Docker Toolbox via <a href="http://brew.sh/">Homebrew</a></p>
 
@@ -104,13 +111,14 @@ default                  virtualbox   Running   tcp://192.168.99.101:2376
 &gt; docker-machine create --driver=virtualbox registry
 </code></pre>
 
-<p>To allow your docker-client to speak with your docker daemon inside your docker machine <em>you follow me, right?</em>, you need to configure some <strong>environment variables</strong> like <code>DOCKER_HOST=&lt;IP-OF-VM&gt;</code>.</p>
+<p>To allow your docker-client to speak with your docker daemon inside your docker machine&hellip;  <em>Huf&hellip; you follow me, right?</em>.
+So, you need to configure some <strong>environment variables</strong> like <code>DOCKER_HOST=&lt;IP-OF-VM&gt;</code>.</p>
 
 <p>docker-machine help you on that with:</p>
 
 <pre><code class="language-bash">&gt; eval $(docker-machine env virtual-slave)
 
-# If you want to run connect to your vm with a specific shell you can use --shell=&lt;SHELL-NAME&gt;
+# If you want to run connect to your vm with a specific shell you can use (like the awesome oh-my-zsh) --shell=&lt;SHELL-NAME&gt;
 
 &gt; eval $(docker-machine env virtual-slave --shell=zsh)
 </code></pre>

@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>Rocket Vision</title>
+    <title>JG sQware</title>
     <link>http://juliengarcia.github.io/</link>
-    <description>Recent content on Rocket Vision</description>
+    <description>Recent content on JG sQware</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Tue, 10 Nov 2015 11:00:00 +0100</lastBuildDate>
@@ -17,11 +17,13 @@
       <guid>http://juliengarcia.github.io/2015/11/docker-registry-installation/</guid>
       <description>
 
-&lt;h1 id=&#34;registry-docker-hub-at-home-for-free:c34b9d8e1a9d73777d6418bc254d4972&#34;&gt;Registry - Docker Hub, at Home, for Free!&lt;/h1&gt;
-
 &lt;blockquote&gt;
-&lt;p&gt;Or how to have our docker registry hub locally
-Due to the slow network, we need to find a way to download docker images from local network instead of Docker Hub.&lt;/p&gt;
+&lt;p&gt;Or how to have our docker registry hub locally&lt;/p&gt;
+
+&lt;h2 id=&#34;due-to-the-slow-network-we-need-to-find-a-way-to-download-docker-images-from-local-network-instead-of-docker-hub:c34b9d8e1a9d73777d6418bc254d4972&#34;&gt;Due to the slow network, we need to find a way to download docker images from local network instead of Docker Hub.&lt;/h2&gt;
+
+&lt;p&gt;When I start writing this article the &lt;a href=&#34;URL-TO-DOCKER-TRUSTED-REGISTRY&#34;&gt;Docker Trusted Registry&lt;/a&gt; was not released yet.
+However, you can run it for free locally.&lt;/p&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;This post is related to OSX docker-machine version. It&amp;rsquo;s almost the same on linux box.&lt;/p&gt;
@@ -255,13 +257,9 @@ latest: digest: sha256:347850a844a7b7be3c92a770477827b4a1af922de2190e70b3a8e9940
       <pubDate>Tue, 10 Nov 2015 09:00:00 +0100</pubDate>
       
       <guid>http://juliengarcia.github.io/2015/11/docker-hosts-automatic-update/</guid>
-      <description>
+      <description>&lt;p&gt;I develop a small script to update your &lt;code&gt;/etc/hosts&lt;/code&gt; with your docker machine ip and a related resolved name.&lt;/p&gt;
 
-&lt;h1 id=&#34;docker-update-your-hosts-with-docker-machine-ips-automatically:4584454c65a244a9bd908e6297804a97&#34;&gt;Docker: Update your hosts with docker-machine ips automatically&lt;/h1&gt;
-
-&lt;p&gt;I develop a small script to update your &lt;code&gt;/etc/hosts&lt;/code&gt; with your docker machine ip and a related resolved name.&lt;/p&gt;
-
-&lt;p&gt;You can found in this &lt;a href=&#34;https://gist.github.com/juliengarcia/9a208ca5cf6590b25150&#34;&gt;update-hosts-docker-machine.sh&lt;/a&gt; or here is it:&lt;/p&gt;
+&lt;p&gt;You can found the gist here  &lt;a href=&#34;https://gist.github.com/juliengarcia/9a208ca5cf6590b25150&#34;&gt;update-hosts-docker-machine.sh&lt;/a&gt; or here is it:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;#!/usr/bin/env bash
 #Usage docker-machine-update-hosts.sh hosts.conf
@@ -311,18 +309,21 @@ registry=docker-registry
       <pubDate>Tue, 10 Nov 2015 08:00:00 +0100</pubDate>
       
       <guid>http://juliengarcia.github.io/2015/11/docker-install-osx/</guid>
-      <description>
-
-&lt;h1 id=&#34;let-s-put-some-docker-in-your-osx:c37c4d4abc178f0a4b5ad7b30aa416ee&#34;&gt;Let&amp;rsquo;s put some Docker in your OSX&lt;/h1&gt;
+      <description>&lt;blockquote&gt;
+&lt;p&gt;Let&amp;rsquo;s put some Docker in your OSX&lt;/p&gt;
+&lt;/blockquote&gt;
 
 &lt;p&gt;The easier way to install Docker is with the &lt;a href=&#34;https://www.docker.com/docker-toolbox&#34;&gt;Docker Toolbox&lt;/a&gt;.&lt;/p&gt;
 
-&lt;p&gt;Docker toolbox install:
- - Docker Client
- - Docker Machine
- - Docker Compose
- - Docker Kitematic
- - VirtualBox&lt;/p&gt;
+&lt;p&gt;Docker toolbox install:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;Docker Client&lt;/li&gt;
+&lt;li&gt;Docker Machine&lt;/li&gt;
+&lt;li&gt;Docker Compose&lt;/li&gt;
+&lt;li&gt;Docker Kitematic&lt;/li&gt;
+&lt;li&gt;VirtualBox&lt;/li&gt;
+&lt;/ul&gt;
 
 &lt;p&gt;You can install Docker Toolbox via &lt;a href=&#34;http://brew.sh/&#34;&gt;Homebrew&lt;/a&gt;&lt;/p&gt;
 
@@ -349,13 +350,14 @@ default                  virtualbox   Running   tcp://192.168.99.101:2376
 &amp;gt; docker-machine create --driver=virtualbox registry
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;p&gt;To allow your docker-client to speak with your docker daemon inside your docker machine &lt;em&gt;you follow me, right?&lt;/em&gt;, you need to configure some &lt;strong&gt;environment variables&lt;/strong&gt; like &lt;code&gt;DOCKER_HOST=&amp;lt;IP-OF-VM&amp;gt;&lt;/code&gt;.&lt;/p&gt;
+&lt;p&gt;To allow your docker-client to speak with your docker daemon inside your docker machine&amp;hellip;  &lt;em&gt;Huf&amp;hellip; you follow me, right?&lt;/em&gt;.
+So, you need to configure some &lt;strong&gt;environment variables&lt;/strong&gt; like &lt;code&gt;DOCKER_HOST=&amp;lt;IP-OF-VM&amp;gt;&lt;/code&gt;.&lt;/p&gt;
 
 &lt;p&gt;docker-machine help you on that with:&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;gt; eval $(docker-machine env virtual-slave)
 
-# If you want to run connect to your vm with a specific shell you can use --shell=&amp;lt;SHELL-NAME&amp;gt;
+# If you want to run connect to your vm with a specific shell you can use (like the awesome oh-my-zsh) --shell=&amp;lt;SHELL-NAME&amp;gt;
 
 &amp;gt; eval $(docker-machine env virtual-slave --shell=zsh)
 &lt;/code&gt;&lt;/pre&gt;
@@ -370,13 +372,11 @@ default                  virtualbox   Running   tcp://192.168.99.101:2376
       <guid>http://juliengarcia.github.io/2015/11/deploy-hugo-on-github-user-pages/</guid>
       <description>
 
-&lt;h1 id=&#34;deploy-hugo-on-github-user-pages:a63ae4cd6112f070c57749a3089cca2d&#34;&gt;Deploy Hugo on github user pages&lt;/h1&gt;
-
-&lt;p&gt;This blog is deploy on &lt;a href=&#34;https://help.github.com/articles/user-organization-and-project-pages/#user--organization-pages&#34;&gt;GitHub User Pages&lt;/a&gt; with &lt;a href=&#34;http://wercker.com/&#34;&gt;Wercker&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;This blog is deployed on &lt;a href=&#34;https://help.github.com/articles/user-organization-and-project-pages/#user--organization-pages&#34;&gt;GitHub User Pages&lt;/a&gt; with &lt;a href=&#34;http://wercker.com/&#34;&gt;Wercker&lt;/a&gt;.&lt;/p&gt;
 
 &lt;p&gt;First, I&amp;rsquo;ve follow the &lt;a href=&#34;https://gohugo.io/tutorials/automated-deployments/&#34;&gt;Hugo User Guide to deploy with Wercker&lt;/a&gt;. But it deploy on Github project pages and not Github User pages. You can use the Hugo user guide first than replace your &lt;code&gt;wercker.yml&lt;/code&gt; file with the following one.&lt;/p&gt;
 
-&lt;p&gt;I&amp;rsquo;m planning to use Hugo as my personal blog generator. So, i&amp;rsquo;ve created a repository in Github &lt;a href=&#34;https://github.com/juliengarcia/rocket-vision&#34;&gt;Rocket-Vision&lt;/a&gt; that hold my hugo code.&lt;/p&gt;
+&lt;p&gt;I&amp;rsquo;m planning to use Hugo as my personal blog generator. So, i&amp;rsquo;ve created a repository in Github &lt;a href=&#34;https://github.com/juliengarcia/rocket-vision&#34;&gt;Rocket-Vision&lt;/a&gt; that hold my &lt;strong&gt;not build&lt;/strong&gt; blog.&lt;/p&gt;
 
 &lt;p&gt;Then I use Wercker to build and deploy on the &lt;a href=&#34;https://github.com/juliengarcia/juliengarcia.github.io&#34;&gt;Github User Page repository&lt;/a&gt;.&lt;/p&gt;
 
@@ -394,9 +394,9 @@ default                  virtualbox   Running   tcp://192.168.99.101:2376
 
 &lt;p&gt;First, I need to install &lt;strong&gt;Git&lt;/strong&gt; to be able to push in the right repository. It&amp;rsquo;s done by the &lt;code&gt;install-packages&lt;/code&gt; step.&lt;/p&gt;
 
-&lt;p&gt;Then, I need to push into a different repository than build one. So, I use the &lt;code&gt;leipert/git-push@0.7.6&lt;/code&gt; step.&lt;/p&gt;
+&lt;p&gt;Then, I need to push into the &lt;a href=&#34;https://github.com/juliengarcia/juliengarcia.github.io&#34;&gt;juliengarcia.github.io&lt;/a&gt; and not in the &lt;a href=&#34;https://github.com/juliengarcia/rocket-vision&#34;&gt;Rocket-Vision&lt;/a&gt;. So, I use the &lt;code&gt;leipert/git-push@0.7.6&lt;/code&gt; step.&lt;/p&gt;
 
-&lt;p&gt;I configure the git token (&lt;em&gt;gh_oauth&lt;/em&gt;) and destination repository (&lt;em&gt;repo: juliengarcia/juliengarcia.github.io&lt;/em&gt;)&lt;/p&gt;
+&lt;p&gt;I configure the git token (&lt;code&gt;gh_oauth&lt;/code&gt; param) and destination repository (&lt;code&gt;repo: juliengarcia/juliengarcia.github.io&lt;/code&gt; param)&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;box: debian
 build:

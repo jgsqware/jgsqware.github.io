@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.14" />
-  <link href="" rel="alternate" type="application/rss+xml" title="Rocket Vision" />
+  <link href="" rel="alternate" type="application/rss+xml" title="JG sQware" />
   <link href="http://juliengarcia.github.io/css/bootstrap.min.css" rel="stylesheet">
   <link href="http://juliengarcia.github.io/css/hc.css" rel="stylesheet">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -27,11 +27,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="http://juliengarcia.github.io/"><p class="navbar-brand">Rocket Vision</p></a>
+          <a href="http://juliengarcia.github.io/"><p class="navbar-brand">JG sQware</p></a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 					
+					
+					<li><a href="http://juliengarcia.github.io/">Home </a></li>
 					
           </ul>
         </div>
@@ -44,15 +46,17 @@
        <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
 					<img src="/images/profile.jpg" />
-          <li class="sidebar-brand"><a href="http://juliengarcia.github.io/"><h1 class="brand">Rocket Vision</h1></a><h3></h3></li>
+          <li class="sidebar-brand"><a href="http://juliengarcia.github.io/"><h1 class="brand">JG sQware</h1></a><h3></h3></li>
           <hr />
+					
+						<li><a href="http://juliengarcia.github.io/">Home </a></li>
 					
           <hr />
           <div id="social-wrapper">
+           <li> <a href="https://twitter.com/JuGarciaGonzale"><i class="fa fa-twitter-square"></i> @twitter</a></li>
            
            
-           
-           
+           <li> <a href="https://github.com/juliengarcia"><i class="fa fa-github-square"></i> github</a> </li>
          </div>
        </ul>
      </div>
@@ -68,13 +72,11 @@
    <div class="post">
      
 
-<h1 id="deploy-hugo-on-github-user-pages:a63ae4cd6112f070c57749a3089cca2d">Deploy Hugo on github user pages</h1>
-
-<p>This blog is deploy on <a href="https://help.github.com/articles/user-organization-and-project-pages/#user--organization-pages">GitHub User Pages</a> with <a href="http://wercker.com/">Wercker</a>.</p>
+<p>This blog is deployed on <a href="https://help.github.com/articles/user-organization-and-project-pages/#user--organization-pages">GitHub User Pages</a> with <a href="http://wercker.com/">Wercker</a>.</p>
 
 <p>First, I&rsquo;ve follow the <a href="https://gohugo.io/tutorials/automated-deployments/">Hugo User Guide to deploy with Wercker</a>. But it deploy on Github project pages and not Github User pages. You can use the Hugo user guide first than replace your <code>wercker.yml</code> file with the following one.</p>
 
-<p>I&rsquo;m planning to use Hugo as my personal blog generator. So, i&rsquo;ve created a repository in Github <a href="https://github.com/juliengarcia/rocket-vision">Rocket-Vision</a> that hold my hugo code.</p>
+<p>I&rsquo;m planning to use Hugo as my personal blog generator. So, i&rsquo;ve created a repository in Github <a href="https://github.com/juliengarcia/rocket-vision">Rocket-Vision</a> that hold my <strong>not build</strong> blog.</p>
 
 <p>Then I use Wercker to build and deploy on the <a href="https://github.com/juliengarcia/juliengarcia.github.io">Github User Page repository</a>.</p>
 
@@ -92,9 +94,9 @@
 
 <p>First, I need to install <strong>Git</strong> to be able to push in the right repository. It&rsquo;s done by the <code>install-packages</code> step.</p>
 
-<p>Then, I need to push into a different repository than build one. So, I use the <code>leipert/git-push@0.7.6</code> step.</p>
+<p>Then, I need to push into the <a href="https://github.com/juliengarcia/juliengarcia.github.io">juliengarcia.github.io</a> and not in the <a href="https://github.com/juliengarcia/rocket-vision">Rocket-Vision</a>. So, I use the <code>leipert/git-push@0.7.6</code> step.</p>
 
-<p>I configure the git token (<em>gh_oauth</em>) and destination repository (<em>repo: juliengarcia/juliengarcia.github.io</em>)</p>
+<p>I configure the git token (<code>gh_oauth</code> param) and destination repository (<code>repo: juliengarcia/juliengarcia.github.io</code> param)</p>
 
 <pre><code class="language-yaml">box: debian
 build:

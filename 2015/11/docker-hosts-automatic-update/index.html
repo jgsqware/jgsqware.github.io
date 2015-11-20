@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.14" />
-  <link href="" rel="alternate" type="application/rss+xml" title="Rocket Vision" />
+  <link href="" rel="alternate" type="application/rss+xml" title="JG sQware" />
   <link href="http://juliengarcia.github.io/css/bootstrap.min.css" rel="stylesheet">
   <link href="http://juliengarcia.github.io/css/hc.css" rel="stylesheet">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -27,11 +27,13 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="http://juliengarcia.github.io/"><p class="navbar-brand">Rocket Vision</p></a>
+          <a href="http://juliengarcia.github.io/"><p class="navbar-brand">JG sQware</p></a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
 					
+					
+					<li><a href="http://juliengarcia.github.io/">Home </a></li>
 					
           </ul>
         </div>
@@ -44,15 +46,17 @@
        <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
 					<img src="/images/profile.jpg" />
-          <li class="sidebar-brand"><a href="http://juliengarcia.github.io/"><h1 class="brand">Rocket Vision</h1></a><h3></h3></li>
+          <li class="sidebar-brand"><a href="http://juliengarcia.github.io/"><h1 class="brand">JG sQware</h1></a><h3></h3></li>
           <hr />
+					
+						<li><a href="http://juliengarcia.github.io/">Home </a></li>
 					
           <hr />
           <div id="social-wrapper">
+           <li> <a href="https://twitter.com/JuGarciaGonzale"><i class="fa fa-twitter-square"></i> @twitter</a></li>
            
            
-           
-           
+           <li> <a href="https://github.com/juliengarcia"><i class="fa fa-github-square"></i> github</a> </li>
          </div>
        </ul>
      </div>
@@ -66,13 +70,9 @@
    <div class="article-title">Docker: Update your hosts with docker-machine ips automatically</div>
    <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2015-11-10</small></p> <hr/>
    <div class="post">
-     
+     <p>I develop a small script to update your <code>/etc/hosts</code> with your docker machine ip and a related resolved name.</p>
 
-<h1 id="docker-update-your-hosts-with-docker-machine-ips-automatically:4584454c65a244a9bd908e6297804a97">Docker: Update your hosts with docker-machine ips automatically</h1>
-
-<p>I develop a small script to update your <code>/etc/hosts</code> with your docker machine ip and a related resolved name.</p>
-
-<p>You can found in this <a href="https://gist.github.com/juliengarcia/9a208ca5cf6590b25150">update-hosts-docker-machine.sh</a> or here is it:</p>
+<p>You can found the gist here  <a href="https://gist.github.com/juliengarcia/9a208ca5cf6590b25150">update-hosts-docker-machine.sh</a> or here is it:</p>
 
 <pre><code class="language-bash">#!/usr/bin/env bash
 #Usage docker-machine-update-hosts.sh hosts.conf
