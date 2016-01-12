@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Wecraft and Devops</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.14" />
+  <link href="" rel="alternate" type="application/rss+xml" title="JG sQware" />
+  <link href="http://jgsqware.github.io/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://jgsqware.github.io/css/hc.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  
+    
+    </head>
+    <body>
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+      <div id = "wrapper">
+
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://jgsqware.github.io/"><p class="navbar-brand">JG sQware</p></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+					
+					<li><a href="http://jgsqware.github.io/">Home </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/images/profile.jpg" />
+          <li class="sidebar-brand"><a href="http://jgsqware.github.io/"><h1 class="brand">JG sQware</h1></a><h3></h3></li>
+          <hr />
+					
+						<li><a href="http://jgsqware.github.io/">Home </a></li>
+					
+          <hr />
+          <div id="social-wrapper">
+           <li> <a href="https://twitter.com/jgsqware"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+           
+           <li> <a href="https://github.com/jgsqware"><i class="fa fa-github-square"></i> github</a> </li>
+         </div>
+       </ul>
+     </div>
+
+
+
+     <div class="container">
+
+
+  <div id="article">
+   <div class="article-title">Wecraft and Devops</div>
+   <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2015-12-14</small></p> <hr/>
+   <div class="post">
+     
+
+<h1 id="context:9a0bb0b71228ba678f2933d76d26e796">Context</h1>
+
+<p>Nginx - Jenkins - Slave</p>
+
+<h1 id="networking:9a0bb0b71228ba678f2933d76d26e796">Networking</h1>
+
+<ol>
+<li>Create Key-Value store for Service Discover, Networks, IPs, &hellip;</li>
+</ol>
+
+<pre><code class="language-bash">   &gt; docker-machine create -d virtualbox keystore
+   &gt; docker $(docker-machine config keystore) run -d \
+    -p &quot;8500:8500&quot; \
+    -h &quot;consul&quot; \
+    progrium/consul -server -bootstrap
+</code></pre>
+
+<ol>
+<li>Create a swarm master</li>
+</ol>
+
+<pre><code class="language-bash">   &gt; docker-machine create \
+        -d virtualbox \
+        --swarm --swarm-master \
+        --swarm-discovery=&quot;consul://&lt;keystore-ip&gt;:8500&quot; \
+        --engine-opt=&quot;cluster-store=consul://&lt;keystore-ip&gt;:8500&quot; \
+        --engine-opt=&quot;cluster-advertise=eth1:2376&quot; \
+        swarm-m
+</code></pre>
+
+<ol>
+<li>Create Swarm nodes</li>
+</ol>
+
+<pre><code class="language-bash">   &gt; docker-machine create -d virtualbox \
+    --swarm \
+    --swarm-discovery=&quot;consul://&lt;keystore-ip&gt;:8500&quot; \
+    --engine-opt=&quot;cluster-store=consul://&lt;keystore-ip&gt;:8500&quot; \
+    --engine-opt=&quot;cluster-advertise=eth1:2376&quot; \
+    swarm-0
+   
+   &gt; docker-machine create -d virtualbox \
+    --swarm \
+    --swarm-discovery=&quot;consul://&lt;keystore-ip&gt;:8500&quot; \
+    --engine-opt=&quot;cluster-store=consul://&lt;keystore-ip&gt;:8500&quot; \
+    --engine-opt=&quot;cluster-advertise=eth1:2376&quot; \
+    swarm-1
+   
+   &gt; docker-machine create -d virtualbox \
+    --swarm \
+    --swarm-discovery=&quot;consul://&lt;keystore-ip&gt;:8500&quot; \
+    --engine-opt=&quot;cluster-store=consul://&lt;keystore-ip&gt;:8500&quot; \
+    --engine-opt=&quot;cluster-advertise=eth1:2376&quot; \
+    swarm-2
+</code></pre>
+
+<ol>
+<li>Create network</li>
+</ol>
+
+<pre><code class="language-bash">   &gt; eval $(docker-machine env --swarm swarm-m)
+   &gt; docker network create -d overlay my-awesome-network
+</code></pre>
+
+<ol>
+<li>Show network on nodes</li>
+</ol>
+
+<pre><code class="language-bash">   &gt; eval $(docker-machine env swarm-0)
+   &gt; docker network ls
+</code></pre>
+
+<ol>
+<li>Back on swarm master</li>
+</ol>
+
+<pre><code class="language-bash">   &gt; eval $(docker-machine env --swarm swarm-m)
+</code></pre>
+
+<ol>
+<li>Create Redis Database on node 0</li>
+</ol>
+
+<pre><code class="language-bash">   &gt; docker run -d --name=db --net=my-awesome-network --env=&quot;constraint:node==swarm-0&quot; -p 6379:6379 redis
+</code></pre>
+
+<ol>
+<li>Create Node Application on node 1</li>
+</ol>
+
+<pre><code class="language-bash">   &gt; docker run -d --name=app --net=my-awesome-network --env=&quot;constraint:node==swarm-1&quot; -p 8080:8080 jgsqware/node-sample:wecraft-15-12-14
+</code></pre>
+
+<ol>
+<li>Create Nginx Web Server on node 2</li>
+</ol>
+
+<pre><code class="language-bash">   &gt; docker run -d --name=web --net=my-awesome-network --env=&quot;constraint:node==swarm-2&quot; -p 80:80 jgsqware/nginx-sample:wecraft-15-12-14
+</code></pre>
+
+   </div>
+ </div>
+
+
+ <a href="https://twitter.com/share" class="twitter-share-button " data-size="small" data-count="none">Tweet</a>
+ <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+ <ul class="pager">
+     
+      &nbsp;<li class="next"><a href="http://jgsqware.github.io/2015/11/draft/sonarqube-with-postgresql-on-docker/"> SonarQube with PostgreSQL on Docker</a></li>
+</ul>
+
+
+
+    </ul>
+    </div>
+    <footer>
+
+        <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+ 
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/hc.js"></script>
+</body>
+
+</html>
+

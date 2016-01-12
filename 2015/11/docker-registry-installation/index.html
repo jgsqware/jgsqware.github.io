@@ -95,14 +95,12 @@ However, you can run it for free locally.</p>
 <p>It will run, but will <strong>not persist</strong> data when the container will stopped.
 So we will use <a href="Docker-Compose link">docker-compose</a>, Docker-compose help you to manage run of multiple container.</p>
 
-<pre><code class="language-yaml"># data volume container
-# The container is used to store data, backup and restore
-storage:
-  image: alpine
-  volumes:
-    - /var/lib/registry
-  command: &quot;true&quot;
+<p>We will create first a volume to persist data:</p>
 
+<pre><code class="language-bash">&gt; docker volumes create --name registry_data
+</code></pre>
+
+<pre><code class="language-yaml">
 # Caching Container
 # Should be use to cache registry and enhance velocity of registry
 
@@ -120,9 +118,8 @@ backend:
     - 5000:5000
   links:
     - cache
-    - storage
-  volumes_from:
-    - storage
+  volumes:
+    - registry_data:/var/lib/registry
   environment:
     SETTINGS_FLAVOR: local
     STORAGE_PATH: /var/lib/registry
@@ -286,7 +283,7 @@ latest: digest: sha256:347850a844a7b7be3c92a770477827b4a1af922de2190e70b3a8e9940
 
 <p>We will run a new container and mount volumes from registry data container, then mount the local folder to <code>/backup</code> in the container. Then, we will compress the registry data to a tarball.</p>
 
-<pre><code class="language-bash">&gt; docker run --volumes-from registry_storage_1 -v $(pwd):/backup alpine sh -c &quot;cd /var/lib/registry &amp;&amp; tar cvf /backup/registry-data.tar .&quot;
+<pre><code class="language-bash">&gt; docker run -v registry_data:/var/lib/registry -v $(pwd):/backup jgsqware/registry-backup
 </code></pre>
 
 <p>You have now a file <code>registry-data.tar</code> in your local folder.</p>
@@ -299,7 +296,8 @@ latest: digest: sha256:347850a844a7b7be3c92a770477827b4a1af922de2190e70b3a8e9940
 
 <p>We will run a new container and mount volumes from registry data container, and mount the local folder to <code>/backup</code>in the container. Then, we will decompress the registry data to the registry data folder.</p>
 
-<pre><code class="language-bash">&gt; docker run --volumes-from registry_storage_1 -v $(pwd):/backup alpine sh -c &quot;cd /var/lib/registry &amp;&amp; tar xvf /backup/registry-data.tar&quot;
+<pre><code class="language-bash"># The file need to be named 'registry-data.tar'
+&gt; docker run -v registry_data:/var/lib/registry -v $(pwd):/backup jgsqware/registry-restore
 </code></pre>
 
 <p>New, you will can check your repository UI url, your backuped images are restored.</p>

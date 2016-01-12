@@ -6,8 +6,118 @@
     <description>Recent content in 2015s on JG sQware</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
-    <lastBuildDate>Fri, 20 Nov 2015 11:52:33 +0100</lastBuildDate>
+    <lastBuildDate>Mon, 14 Dec 2015 11:00:00 +0100</lastBuildDate>
     <atom:link href="http://jgsqware.github.io/2015/index.xml" rel="self" type="application/rss+xml" />
+    
+    <item>
+      <title>Wecraft and Devops</title>
+      <link>http://jgsqware.github.io/2015/12/draft/wecraft-and-devops/</link>
+      <pubDate>Mon, 14 Dec 2015 11:00:00 +0100</pubDate>
+      
+      <guid>http://jgsqware.github.io/2015/12/draft/wecraft-and-devops/</guid>
+      <description>
+
+&lt;h1 id=&#34;context:9a0bb0b71228ba678f2933d76d26e796&#34;&gt;Context&lt;/h1&gt;
+
+&lt;p&gt;Nginx - Jenkins - Slave&lt;/p&gt;
+
+&lt;h1 id=&#34;networking:9a0bb0b71228ba678f2933d76d26e796&#34;&gt;Networking&lt;/h1&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create Key-Value store for Service Discover, Networks, IPs, &amp;hellip;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; docker-machine create -d virtualbox keystore
+   &amp;gt; docker $(docker-machine config keystore) run -d \
+    -p &amp;quot;8500:8500&amp;quot; \
+    -h &amp;quot;consul&amp;quot; \
+    progrium/consul -server -bootstrap
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create a swarm master&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; docker-machine create \
+        -d virtualbox \
+        --swarm --swarm-master \
+        --swarm-discovery=&amp;quot;consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
+        --engine-opt=&amp;quot;cluster-store=consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
+        --engine-opt=&amp;quot;cluster-advertise=eth1:2376&amp;quot; \
+        swarm-m
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create Swarm nodes&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; docker-machine create -d virtualbox \
+    --swarm \
+    --swarm-discovery=&amp;quot;consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
+    --engine-opt=&amp;quot;cluster-store=consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
+    --engine-opt=&amp;quot;cluster-advertise=eth1:2376&amp;quot; \
+    swarm-0
+   
+   &amp;gt; docker-machine create -d virtualbox \
+    --swarm \
+    --swarm-discovery=&amp;quot;consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
+    --engine-opt=&amp;quot;cluster-store=consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
+    --engine-opt=&amp;quot;cluster-advertise=eth1:2376&amp;quot; \
+    swarm-1
+   
+   &amp;gt; docker-machine create -d virtualbox \
+    --swarm \
+    --swarm-discovery=&amp;quot;consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
+    --engine-opt=&amp;quot;cluster-store=consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
+    --engine-opt=&amp;quot;cluster-advertise=eth1:2376&amp;quot; \
+    swarm-2
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create network&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; eval $(docker-machine env --swarm swarm-m)
+   &amp;gt; docker network create -d overlay my-awesome-network
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Show network on nodes&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; eval $(docker-machine env swarm-0)
+   &amp;gt; docker network ls
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Back on swarm master&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; eval $(docker-machine env --swarm swarm-m)
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create Redis Database on node 0&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; docker run -d --name=db --net=my-awesome-network --env=&amp;quot;constraint:node==swarm-0&amp;quot; -p 6379:6379 redis
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create Node Application on node 1&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; docker run -d --name=app --net=my-awesome-network --env=&amp;quot;constraint:node==swarm-1&amp;quot; -p 8080:8080 jgsqware/node-sample:wecraft-15-12-14
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Create Nginx Web Server on node 2&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; docker run -d --name=web --net=my-awesome-network --env=&amp;quot;constraint:node==swarm-2&amp;quot; -p 80:80 jgsqware/nginx-sample:wecraft-15-12-14
+&lt;/code&gt;&lt;/pre&gt;
+</description>
+    </item>
     
     <item>
       <title>SonarQube with PostgreSQL on Docker</title>
@@ -95,14 +205,12 @@ However, you can run it for free locally.&lt;/p&gt;
 &lt;p&gt;It will run, but will &lt;strong&gt;not persist&lt;/strong&gt; data when the container will stopped.
 So we will use &lt;a href=&#34;Docker-Compose link&#34;&gt;docker-compose&lt;/a&gt;, Docker-compose help you to manage run of multiple container.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;# data volume container
-# The container is used to store data, backup and restore
-storage:
-  image: alpine
-  volumes:
-    - /var/lib/registry
-  command: &amp;quot;true&amp;quot;
+&lt;p&gt;We will create first a volume to persist data:&lt;/p&gt;
 
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;gt; docker volumes create --name registry_data
+&lt;/code&gt;&lt;/pre&gt;
+
+&lt;pre&gt;&lt;code class=&#34;language-yaml&#34;&gt;
 # Caching Container
 # Should be use to cache registry and enhance velocity of registry
 
@@ -120,9 +228,8 @@ backend:
     - 5000:5000
   links:
     - cache
-    - storage
-  volumes_from:
-    - storage
+  volumes:
+    - registry_data:/var/lib/registry
   environment:
     SETTINGS_FLAVOR: local
     STORAGE_PATH: /var/lib/registry
@@ -286,7 +393,7 @@ latest: digest: sha256:347850a844a7b7be3c92a770477827b4a1af922de2190e70b3a8e9940
 
 &lt;p&gt;We will run a new container and mount volumes from registry data container, then mount the local folder to &lt;code&gt;/backup&lt;/code&gt; in the container. Then, we will compress the registry data to a tarball.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;gt; docker run --volumes-from registry_storage_1 -v $(pwd):/backup alpine sh -c &amp;quot;cd /var/lib/registry &amp;amp;&amp;amp; tar cvf /backup/registry-data.tar .&amp;quot;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;gt; docker run -v registry_data:/var/lib/registry -v $(pwd):/backup jgsqware/registry-backup
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;You have now a file &lt;code&gt;registry-data.tar&lt;/code&gt; in your local folder.&lt;/p&gt;
@@ -299,7 +406,8 @@ latest: digest: sha256:347850a844a7b7be3c92a770477827b4a1af922de2190e70b3a8e9940
 
 &lt;p&gt;We will run a new container and mount volumes from registry data container, and mount the local folder to &lt;code&gt;/backup&lt;/code&gt;in the container. Then, we will decompress the registry data to the registry data folder.&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;&amp;gt; docker run --volumes-from registry_storage_1 -v $(pwd):/backup alpine sh -c &amp;quot;cd /var/lib/registry &amp;amp;&amp;amp; tar xvf /backup/registry-data.tar&amp;quot;
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# The file need to be named &#39;registry-data.tar&#39;
+&amp;gt; docker run -v registry_data:/var/lib/registry -v $(pwd):/backup jgsqware/registry-restore
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;New, you will can check your repository UI url, your backuped images are restored.&lt;/p&gt;
