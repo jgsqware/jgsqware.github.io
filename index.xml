@@ -2,19 +2,19 @@
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
     <title>JG sQware</title>
-    <link>http://juliengarcia.github.io/</link>
+    <link>http://jgsqware.github.io/</link>
     <description>Recent content on JG sQware</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Fri, 20 Nov 2015 11:52:33 +0100</lastBuildDate>
-    <atom:link href="http://juliengarcia.github.io/index.xml" rel="self" type="application/rss+xml" />
+    <atom:link href="http://jgsqware.github.io/index.xml" rel="self" type="application/rss+xml" />
     
     <item>
       <title>SonarQube with PostgreSQL on Docker</title>
-      <link>http://juliengarcia.github.io/2015/11/draft/sonarqube-with-postgresql-on-docker/</link>
+      <link>http://jgsqware.github.io/2015/11/draft/sonarqube-with-postgresql-on-docker/</link>
       <pubDate>Fri, 20 Nov 2015 11:52:33 +0100</pubDate>
       
-      <guid>http://juliengarcia.github.io/2015/11/draft/sonarqube-with-postgresql-on-docker/</guid>
+      <guid>http://jgsqware.github.io/2015/11/draft/sonarqube-with-postgresql-on-docker/</guid>
       <description>
 
 &lt;h1 id=&#34;run-sonarqube-on-postgresql:109f71eb4cb170550111d782491e538d&#34;&gt;Run SonarQube on PostgreSQL&lt;/h1&gt;
@@ -66,10 +66,10 @@ db:
     
     <item>
       <title>Registry - Docker Hub, at Home, for Free!</title>
-      <link>http://juliengarcia.github.io/2015/11/docker-registry-installation/</link>
+      <link>http://jgsqware.github.io/2015/11/docker-registry-installation/</link>
       <pubDate>Tue, 10 Nov 2015 11:00:00 +0100</pubDate>
       
-      <guid>http://juliengarcia.github.io/2015/11/docker-registry-installation/</guid>
+      <guid>http://jgsqware.github.io/2015/11/docker-registry-installation/</guid>
       <description>
 
 &lt;blockquote&gt;
@@ -165,7 +165,7 @@ I need to add the restart-always in docker-compose&lt;/p&gt;
 - you can &lt;strong&gt;pull*, **push&lt;/strong&gt;, &lt;strong&gt;search&lt;/strong&gt; repository on &lt;IP-OF-DOCKER&gt;:5000
 - you can browse the repository on &lt;IP-OF-DOCKER&gt;:5080&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&#34;http://juliengarcia.github.io/images/2015/11/docker-registry-frontend.png&#34; alt=&#34;Docker Registry Frontend&#34; /&gt;
+&lt;p&gt;&lt;img src=&#34;http://jgsqware.github.io/images/2015/11/docker-registry-frontend.png&#34; alt=&#34;Docker Registry Frontend&#34; /&gt;
 &lt;/p&gt;
 
 &lt;h2 id=&#34;everywhere-you-want-it-everywhere:c34b9d8e1a9d73777d6418bc254d4972&#34;&gt;Everywhere&amp;hellip; You want it everywhere&lt;/h2&gt;
@@ -308,10 +308,10 @@ latest: digest: sha256:347850a844a7b7be3c92a770477827b4a1af922de2190e70b3a8e9940
     
     <item>
       <title>Docker: Update your hosts with docker-machine ips automatically</title>
-      <link>http://juliengarcia.github.io/2015/11/docker-hosts-automatic-update/</link>
+      <link>http://jgsqware.github.io/2015/11/docker-hosts-automatic-update/</link>
       <pubDate>Tue, 10 Nov 2015 09:00:00 +0100</pubDate>
       
-      <guid>http://juliengarcia.github.io/2015/11/docker-hosts-automatic-update/</guid>
+      <guid>http://jgsqware.github.io/2015/11/docker-hosts-automatic-update/</guid>
       <description>&lt;p&gt;I develop a small script to update your &lt;code&gt;/etc/hosts&lt;/code&gt; with your docker machine ip and a related resolved name.&lt;/p&gt;
 
 &lt;p&gt;You can found the gist here  &lt;a href=&#34;https://gist.github.com/juliengarcia/9a208ca5cf6590b25150&#34;&gt;update-hosts-docker-machine.sh&lt;/a&gt; or here is it:&lt;/p&gt;
@@ -360,10 +360,10 @@ registry=docker-registry
     
     <item>
       <title>Docker: Installation on OSX</title>
-      <link>http://juliengarcia.github.io/2015/11/docker-install-osx/</link>
+      <link>http://jgsqware.github.io/2015/11/docker-install-osx/</link>
       <pubDate>Tue, 10 Nov 2015 08:00:00 +0100</pubDate>
       
-      <guid>http://juliengarcia.github.io/2015/11/docker-install-osx/</guid>
+      <guid>http://jgsqware.github.io/2015/11/docker-install-osx/</guid>
       <description>&lt;blockquote&gt;
 &lt;p&gt;Let&amp;rsquo;s put some Docker in your OSX&lt;/p&gt;
 &lt;/blockquote&gt;
@@ -421,10 +421,10 @@ So, you need to configure some &lt;strong&gt;environment variables&lt;/strong&gt
     
     <item>
       <title>Deploy Hugo on Github user pages</title>
-      <link>http://juliengarcia.github.io/2015/11/deploy-hugo-on-github-user-pages/</link>
+      <link>http://jgsqware.github.io/2015/11/deploy-hugo-on-github-user-pages/</link>
       <pubDate>Mon, 09 Nov 2015 08:00:00 +0100</pubDate>
       
-      <guid>http://juliengarcia.github.io/2015/11/deploy-hugo-on-github-user-pages/</guid>
+      <guid>http://jgsqware.github.io/2015/11/deploy-hugo-on-github-user-pages/</guid>
       <description>
 
 &lt;p&gt;This blog is deployed on &lt;a href=&#34;https://help.github.com/articles/user-organization-and-project-pages/#user--organization-pages&#34;&gt;GitHub User Pages&lt;/a&gt; with &lt;a href=&#34;http://wercker.com/&#34;&gt;Wercker&lt;/a&gt;.&lt;/p&gt;
