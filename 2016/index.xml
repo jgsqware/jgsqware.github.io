@@ -246,11 +246,10 @@ CONTAINER ID        IMAGE                 COMMAND                  CREATED      
 
 &lt;p&gt;The created data volume cn be seen by:&lt;/p&gt;
 
-&lt;p&gt;&amp;rdquo;&amp;lsquo;bash
-$ docker volume ls
+&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;$ docker volume ls
 DRIVER              VOLUME NAME
 local               authenticatedregistry_registry-data
-&amp;ldquo;&amp;rsquo;&lt;/p&gt;
+&lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Your own docker registry is now available:
 - you can &lt;strong&gt;login&lt;/strong&gt;,&lt;strong&gt;pull&lt;/strong&gt;, &lt;strong&gt;push&lt;/strong&gt; repository on localhost:5000&lt;/p&gt;
