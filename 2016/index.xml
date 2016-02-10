@@ -22,10 +22,13 @@
 &lt;p&gt;Let&amp;rsquo;s first take a look on &lt;a href=&#34;https://docs.docker.com/registry/&#34;&gt;Docker Registry&lt;/a&gt; page:&lt;/p&gt;
 
 &lt;blockquote&gt;
-&lt;p&gt;You should use the Registry if you want to:
-  - tightly control where your images are being stored
-  - fully own your images distribution pipeline
-  - integrate image storage and distribution tightly into your in-house development workflow&lt;/p&gt;
+&lt;p&gt;You should use the Registry if you want to:&lt;/p&gt;
+
+&lt;ul&gt;
+&lt;li&gt;tightly control where your images are being stored&lt;/li&gt;
+&lt;li&gt;fully own your images distribution pipeline&lt;/li&gt;
+&lt;li&gt;integrate image storage and distribution tightly into your in-house development workflow&lt;/li&gt;
+&lt;/ul&gt;
 &lt;/blockquote&gt;
 
 &lt;p&gt;So now, how can we deploy our registry, how can I connect to it and manage my images.&lt;/p&gt;
