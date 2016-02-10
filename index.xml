@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8" standalone="yes" ?>
 <rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
   <channel>
-    <title>JG sQware</title>
+    <title>jgsqware</title>
     <link>http://jgsqware.github.io/</link>
-    <description>Recent content on JG sQware</description>
+    <description>Recent content on jgsqware</description>
     <generator>Hugo -- gohugo.io</generator>
     <language>en-us</language>
     <lastBuildDate>Wed, 10 Feb 2016 11:00:00 +0100</lastBuildDate>
@@ -449,169 +449,33 @@ You can see it in log, with last line as&lt;/li&gt;
 
 &lt;h2 id=&#34;docker-daemon:13dab5c50f2a26b253bb0212bca3627c&#34;&gt;Docker Daemon&lt;/h2&gt;
 
-&lt;ol&gt;
-&lt;li&gt;Update Docker Daemon options&lt;/li&gt;
-&lt;/ol&gt;
+&lt;h2 id=&#34;1-update-docker-daemon-options:13dab5c50f2a26b253bb0212bca3627c&#34;&gt;1. Update Docker Daemon options&lt;/h2&gt;
 
-&lt;p&gt;a. Debian
-Docker daemon is run via &lt;code&gt;systemd&lt;/code&gt;&lt;/p&gt;
+&lt;h3 id=&#34;debian:13dab5c50f2a26b253bb0212bca3627c&#34;&gt;Debian&lt;/h3&gt;
+
+&lt;p&gt;Docker daemon is run via &lt;code&gt;systemd&lt;/code&gt;&lt;/p&gt;
 
 &lt;p&gt;Add &lt;code&gt;/etc/default/docker&lt;/code&gt; in systemd configuration file:&lt;/p&gt;
 
-&lt;pre&gt;&lt;code class=&#34;language-toml&#34;&gt;# In file /lib/systemd/system/docker.service
-[Unit]
-Description=Docker Application Container Engine
-Documentation=https://docs.docker.com
-After=network.target docker.socket
-Requires=docker.socket
+&lt;pre&gt;&lt;code class=&#34;language-toml&#34;&gt;  # In file /lib/systemd/system/docker.service
+  [Unit]
+  Description=Docker Application Container Engine
+  Documentation=https://docs.docker.com
+  After=network.target docker.socket
+  Requires=docker.socket
 
-[Service]
-EnvironmentFile=-/etc/default/docker
-Type=notify
-ExecStart=/usr/bin/docker daemon -H fd://
-MountFlags=slave
-LimitNOFILE=1048576
-LimitNPROC=1048576
-LimitCORE=infinity
+  [Service]
+  EnvironmentFile=-/etc/default/docker
+  Type=notify
+  ExecStart=/usr/bin/docker daemon -H fd://
+  MountFlags=slave
+  LimitNOFILE=1048576
+  LimitNPROC=1048576
+  LimitCORE=infinity
 
-[Install]
-WantedBy=multi-user.target
+  [Install]
+  WantedBy=multi-user.target
 &lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>Wecraft and Devops</title>
-      <link>http://jgsqware.github.io/2015/12/draft/wecraft-and-devops/</link>
-      <pubDate>Mon, 14 Dec 2015 11:00:00 +0100</pubDate>
-      
-      <guid>http://jgsqware.github.io/2015/12/draft/wecraft-and-devops/</guid>
-      <description>
-
-&lt;h1 id=&#34;context:9a0bb0b71228ba678f2933d76d26e796&#34;&gt;Context&lt;/h1&gt;
-
-&lt;p&gt;Nginx - Jenkins - Slave&lt;/p&gt;
-
-&lt;h1 id=&#34;networking:9a0bb0b71228ba678f2933d76d26e796&#34;&gt;Networking&lt;/h1&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create Key-Value store for Service Discover, Networks, IPs, &amp;hellip;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; docker-machine create -d virtualbox keystore
-   &amp;gt; docker $(docker-machine config keystore) run -d \
-    -p &amp;quot;8500:8500&amp;quot; \
-    -h &amp;quot;consul&amp;quot; \
-    progrium/consul -server -bootstrap
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create a swarm master&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; docker-machine create \
-        -d virtualbox \
-        --swarm --swarm-master \
-        --swarm-discovery=&amp;quot;consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
-        --engine-opt=&amp;quot;cluster-store=consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
-        --engine-opt=&amp;quot;cluster-advertise=eth1:2376&amp;quot; \
-        swarm-m
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create Swarm nodes&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; docker-machine create -d virtualbox \
-    --swarm \
-    --swarm-discovery=&amp;quot;consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
-    --engine-opt=&amp;quot;cluster-store=consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
-    --engine-opt=&amp;quot;cluster-advertise=eth1:2376&amp;quot; \
-    swarm-0
-   
-   &amp;gt; docker-machine create -d virtualbox \
-    --swarm \
-    --swarm-discovery=&amp;quot;consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
-    --engine-opt=&amp;quot;cluster-store=consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
-    --engine-opt=&amp;quot;cluster-advertise=eth1:2376&amp;quot; \
-    swarm-1
-   
-   &amp;gt; docker-machine create -d virtualbox \
-    --swarm \
-    --swarm-discovery=&amp;quot;consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
-    --engine-opt=&amp;quot;cluster-store=consul://&amp;lt;keystore-ip&amp;gt;:8500&amp;quot; \
-    --engine-opt=&amp;quot;cluster-advertise=eth1:2376&amp;quot; \
-    swarm-2
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create network&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; eval $(docker-machine env --swarm swarm-m)
-   &amp;gt; docker network create -d overlay my-awesome-network
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Show network on nodes&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; eval $(docker-machine env swarm-0)
-   &amp;gt; docker network ls
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Back on swarm master&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; eval $(docker-machine env --swarm swarm-m)
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create Redis Database on node 0&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; docker run -d --name=db --net=my-awesome-network --env=&amp;quot;constraint:node==swarm-0&amp;quot; -p 6379:6379 redis
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create Node Application on node 1&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; docker run -d --name=app --net=my-awesome-network --env=&amp;quot;constraint:node==swarm-1&amp;quot; -p 8080:8080 jgsqware/node-sample:wecraft-15-12-14
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Create Nginx Web Server on node 2&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;   &amp;gt; docker run -d --name=web --net=my-awesome-network --env=&amp;quot;constraint:node==swarm-2&amp;quot; -p 80:80 jgsqware/nginx-sample:wecraft-15-12-14
-&lt;/code&gt;&lt;/pre&gt;
-</description>
-    </item>
-    
-    <item>
-      <title>rancher jenkins gitlab</title>
-      <link>http://jgsqware.github.io/2015/11/draft/rancher-jenkins-gitlab/</link>
-      <pubDate>Tue, 24 Nov 2015 15:11:16 +0100</pubDate>
-      
-      <guid>http://jgsqware.github.io/2015/11/draft/rancher-jenkins-gitlab/</guid>
-      <description>
-
-&lt;h1 id=&#34;create-machine-rancheros:2b111e2d93820ea9d8d426ecc3e5fd6b&#34;&gt;Create Machine RancherOS&lt;/h1&gt;
-
-&lt;p&gt;docker-machine create -d virtualbox &amp;ndash;virtualbox-boot2docker-url &lt;a href=&#34;https://github.com/rancher/os/releases/download/v0.4.1/rancheros.iso&#34;&gt;https://github.com/rancher/os/releases/download/v0.4.1/rancheros.iso&lt;/a&gt; &amp;ndash;engine-insecure-registry=192.168.99.113:5000  node-02&lt;/p&gt;
-
-&lt;h1 id=&#34;run-agent:2b111e2d93820ea9d8d426ecc3e5fd6b&#34;&gt;Run Agent&lt;/h1&gt;
-
-&lt;p&gt;docker run -d &amp;ndash;privileged -v /var/run/docker.sock:/var/run/docker.sock rancher/agent &lt;a href=&#34;http://192.168.99.109:8080/v1/scripts/1BEF035774A57A80B8D7:1448373600000:k8MZKOxFjSKhbGo6rJYq8h8Wsw&#34;&gt;http://192.168.99.109:8080/v1/scripts/1BEF035774A57A80B8D7:1448373600000:k8MZKOxFjSKhbGo6rJYq8h8Wsw&lt;/a&gt;&lt;/p&gt;
-
-&lt;h1 id=&#34;download-locally-the-agent:2b111e2d93820ea9d8d426ecc3e5fd6b&#34;&gt;Download locally the agent&lt;/h1&gt;
-
-&lt;p&gt;docker pull 192.168.99.120:5000/rancher/agent:v0.8.2 &amp;amp;&amp;amp;\
-  docker tag 192.168.99.120:5000/rancher/agent:v0.8.2 rancher/agent:v0.8.2 &amp;amp;&amp;amp;\
-  docker pull 192.168.99.120:5000/rancher/agent-instance:v0.5.0 &amp;amp;&amp;amp;\
-  docker tag 192.168.99.120:5000/rancher/agent-instance:v0.5.0 rancher/agent-instance:v0.5.0&lt;/p&gt;
 </description>
     </item>
     
@@ -837,89 +701,6 @@ deploy:
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now, on every push on Rocket-Vision repository, the hugo website is build then deploy on the juliengarcia.github.io repository and available on &lt;a href=&#34;http://juliengarcia.github.io&#34;&gt;http://juliengarcia.github.io&lt;/a&gt;&lt;/p&gt;
-</description>
-    </item>
-    
-    <item>
-      <title></title>
-      <link>http://jgsqware.github.io/2016/draft/security/</link>
-      <pubDate>Mon, 01 Jan 0001 00:00:00 +0000</pubDate>
-      
-      <guid>http://jgsqware.github.io/2016/draft/security/</guid>
-      <description>
-
-&lt;h1 id=&#34;install-gogs:8c8be46b296d6b9c1a91080fe9b4316b&#34;&gt;Install Gogs&lt;/h1&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Create volume
-&lt;code&gt;docker volume create --name gogs-data&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Pull image
-&lt;code&gt;docker pull gogs/gogs&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-
-&lt;li&gt;&lt;p&gt;Run with volume
-&lt;code&gt;docker run --name=gogs -p 10022:22 -p 10080:3000 -v gogs-data:/data -d gogs/gogs&lt;/code&gt;&lt;/p&gt;&lt;/li&gt;
-&lt;/ol&gt;
-
-&lt;h2 id=&#34;settings:8c8be46b296d6b9c1a91080fe9b4316b&#34;&gt;Settings&lt;/h2&gt;
-
-&lt;p&gt;Most of settings are obvious and easy to understand, but there are some settings can be confusing by running Gogs inside Docker:&lt;/p&gt;
-
-&lt;h3 id=&#34;database-settings:8c8be46b296d6b9c1a91080fe9b4316b&#34;&gt;Database Settings&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Database type&lt;/strong&gt;: SQLite3&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Path&lt;/strong&gt;: data/gogs.db&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h3 id=&#34;general-settings:8c8be46b296d6b9c1a91080fe9b4316b&#34;&gt;General Settings&lt;/h3&gt;
-
-&lt;ul&gt;
-&lt;li&gt;&lt;strong&gt;Repository Root Path&lt;/strong&gt;: keep it as default value &lt;code&gt;/home/git/gogs-repositories&lt;/code&gt; because &lt;code&gt;start.sh&lt;/code&gt; already made a symbolic link for you.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Run User&lt;/strong&gt;: keep it as default value &lt;code&gt;git&lt;/code&gt; because &lt;code&gt;start.sh&lt;/code&gt; already setup a user with name &lt;code&gt;git&lt;/code&gt;.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Domain&lt;/strong&gt;: fill in with Docker container IP(e.g. &lt;code&gt;192.168.99.100&lt;/code&gt;). But if you want to access your Gogs instance from a different physical machine, please fill in with the hostname or IP address of the Docker host machine.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;SSH Port&lt;/strong&gt;: Use the exposed port from Docker container. For example, your SSH server listens on &lt;code&gt;22&lt;/code&gt; inside Docker, but you expose it by &lt;code&gt;10022:22&lt;/code&gt;, then use &lt;code&gt;10022&lt;/code&gt; for this value. &lt;strong&gt;Builtin SSH server is not recommended inside Docker Container&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;HTTP Port&lt;/strong&gt;: Use port you want Gogs to listen on inside Docker container. For example, your Gogs listens on &lt;code&gt;3000&lt;/code&gt; inside Docker, and you expose it by &lt;code&gt;10080:3000&lt;/code&gt;, but you still use &lt;code&gt;3000&lt;/code&gt; for this value.&lt;/li&gt;
-&lt;li&gt;&lt;strong&gt;Application URL&lt;/strong&gt;: Use combination of &lt;strong&gt;Domain&lt;/strong&gt; and &lt;strong&gt;exposed HTTP Port&lt;/strong&gt; values(e.g. &lt;code&gt;http://192.168.99.100:10080/&lt;/code&gt;).&lt;/li&gt;
-&lt;/ul&gt;
-
-&lt;h1 id=&#34;vulnerable-container:8c8be46b296d6b9c1a91080fe9b4316b&#34;&gt;Vulnerable container&lt;/h1&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-Dockerfile&#34;&gt;FROM busybox:latest
-MAINTAINER Julien Garcia Gonzalez &amp;lt;jgonzalez@wemanity.com&amp;gt;
-
-ENTRYPOINT echo &amp;quot;Hello from Vulnerable Container!&amp;quot;
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h1 id=&#34;coreos-clair:8c8be46b296d6b9c1a91080fe9b4316b&#34;&gt;CoreOS Clair&lt;/h1&gt;
-
-&lt;h2 id=&#34;installing-gopath:8c8be46b296d6b9c1a91080fe9b4316b&#34;&gt;Installing GOPATH&lt;/h2&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# Cannot use ~ metashell character
-mkdir /home/juliengarcia/.go
-
-# In .zshrc
-export GOPATH=&amp;quot;~/.go&amp;quot;
-export PATH=$PATH:$GOPATH/bin
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h2 id=&#34;install-clair:8c8be46b296d6b9c1a91080fe9b4316b&#34;&gt;Install Clair&lt;/h2&gt;
-
-&lt;h3 id=&#34;install-go-tool-to-analyze-image-locally:8c8be46b296d6b9c1a91080fe9b4316b&#34;&gt;Install Go Tool to analyze image locally&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;go get -u github.com/coreos/clair/contrib/analyze-local-images
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;copy-base-configuration-file-locally:8c8be46b296d6b9c1a91080fe9b4316b&#34;&gt;Copy base configuration file locally&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;# In your Clair folder
-curl -O https://raw.githubusercontent.com/coreos/clair/master/config.example.yaml
-&lt;/code&gt;&lt;/pre&gt;
-
-&lt;h3 id=&#34;run-clair-container:8c8be46b296d6b9c1a91080fe9b4316b&#34;&gt;Run Clair container&lt;/h3&gt;
-
-&lt;pre&gt;&lt;code class=&#34;language-bash&#34;&gt;docker run -it -v /tmp:/tmp -p 6060:6060 -p 6061:6061 -v &amp;lt;DIR_WITH_CONFIG&amp;gt;:/config:ro quay.io/coreos/clair:latest --config=/config/config.example.yaml
-&lt;/code&gt;&lt;/pre&gt;
 </description>
     </item>
     

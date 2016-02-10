@@ -6,7 +6,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.14" />
-  <link href="" rel="alternate" type="application/rss+xml" title="JG sQware" />
+  <link href="" rel="alternate" type="application/rss+xml" title="jgsqware" />
   <link href="http://jgsqware.github.io/css/bootstrap.min.css" rel="stylesheet">
   <link href="http://jgsqware.github.io/css/hc.css" rel="stylesheet">
   <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
@@ -27,7 +27,7 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
           </button>
-          <a href="http://jgsqware.github.io/"><p class="navbar-brand">JG sQware</p></a>
+          <a href="http://jgsqware.github.io/"><p class="navbar-brand">jgsqware</p></a>
         </div>
         <div class="navbar-collapse collapse">
           <ul class="nav navbar-nav">
@@ -46,7 +46,7 @@
        <div id="sidebar-wrapper">
         <ul class="sidebar-nav">
 					<img src="/images/profile.jpg" />
-          <li class="sidebar-brand"><a href="http://jgsqware.github.io/"><h1 class="brand">JG sQware</h1></a><h3></h3></li>
+          <li class="sidebar-brand"><a href="http://jgsqware.github.io/"><h1 class="brand">jgsqware</h1></a><h3></h3></li>
           <hr />
 					
 						<li><a href="http://jgsqware.github.io/">Home </a></li>
@@ -74,33 +74,32 @@
 
 <h2 id="docker-daemon:13dab5c50f2a26b253bb0212bca3627c">Docker Daemon</h2>
 
-<ol>
-<li>Update Docker Daemon options</li>
-</ol>
+<h2 id="1-update-docker-daemon-options:13dab5c50f2a26b253bb0212bca3627c">1. Update Docker Daemon options</h2>
 
-<p>a. Debian
-Docker daemon is run via <code>systemd</code></p>
+<h3 id="debian:13dab5c50f2a26b253bb0212bca3627c">Debian</h3>
+
+<p>Docker daemon is run via <code>systemd</code></p>
 
 <p>Add <code>/etc/default/docker</code> in systemd configuration file:</p>
 
-<pre><code class="language-toml"># In file /lib/systemd/system/docker.service
-[Unit]
-Description=Docker Application Container Engine
-Documentation=https://docs.docker.com
-After=network.target docker.socket
-Requires=docker.socket
+<pre><code class="language-toml">  # In file /lib/systemd/system/docker.service
+  [Unit]
+  Description=Docker Application Container Engine
+  Documentation=https://docs.docker.com
+  After=network.target docker.socket
+  Requires=docker.socket
 
-[Service]
-EnvironmentFile=-/etc/default/docker
-Type=notify
-ExecStart=/usr/bin/docker daemon -H fd://
-MountFlags=slave
-LimitNOFILE=1048576
-LimitNPROC=1048576
-LimitCORE=infinity
+  [Service]
+  EnvironmentFile=-/etc/default/docker
+  Type=notify
+  ExecStart=/usr/bin/docker daemon -H fd://
+  MountFlags=slave
+  LimitNOFILE=1048576
+  LimitNPROC=1048576
+  LimitCORE=infinity
 
-[Install]
-WantedBy=multi-user.target
+  [Install]
+  WantedBy=multi-user.target
 </code></pre>
 
    </div>
@@ -112,7 +111,7 @@ WantedBy=multi-user.target
 
  <ul class="pager">
       &nbsp;<li class="previous"><a href="http://jgsqware.github.io/2016/02/docker-registry-installation/"> Docker Registry - Docker Hub, at Home, for Free!</a></li>
-      &nbsp;<li class="next"><a href="http://jgsqware.github.io/2015/12/draft/wecraft-and-devops/"> Wecraft and Devops</a></li>
+      &nbsp;<li class="next"><a href="http://jgsqware.github.io/2015/11/draft/sonarqube-with-postgresql-on-docker/"> SonarQube with PostgreSQL on Docker</a></li>
 </ul>
 
 
