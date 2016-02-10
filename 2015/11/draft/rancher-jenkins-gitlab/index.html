@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <title>Docker: Update your hosts with docker-machine ips automatically</title>
+  <title>rancher jenkins gitlab</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="">
   <meta name="generator" content="Hugo 0.14" />
@@ -67,52 +67,25 @@
 
 
   <div id="article">
-   <div class="article-title">Docker: Update your hosts with docker-machine ips automatically</div>
-   <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2015-11-10</small></p> <hr/>
+   <div class="article-title">rancher jenkins gitlab</div>
+   <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2015-11-24</small></p> <hr/>
    <div class="post">
-     <p>I develop a small script to update your <code>/etc/hosts</code> with your docker machine ip and a related resolved name.</p>
+     
 
-<p>You can found the gist here  <a href="https://gist.github.com/juliengarcia/9a208ca5cf6590b25150">update-hosts-docker-machine.sh</a> or here is it:</p>
+<h1 id="create-machine-rancheros:2b111e2d93820ea9d8d426ecc3e5fd6b">Create Machine RancherOS</h1>
 
-<pre><code class="language-bash">#!/usr/bin/env bash
-#Usage docker-machine-update-hosts.sh hosts.conf
-#arg1 is a configuration file with hosts
+<p>docker-machine create -d virtualbox &ndash;virtualbox-boot2docker-url <a href="https://github.com/rancher/os/releases/download/v0.4.1/rancheros.iso">https://github.com/rancher/os/releases/download/v0.4.1/rancheros.iso</a> &ndash;engine-insecure-registry=192.168.99.113:5000  node-02</p>
 
-#Remove existing lines from hosts
-while read -r line; do
-    [[ &quot;$line&quot; =~ ^#.*$ ]] &amp;&amp; continue
-  echo &quot;Configuration: $line&quot;
-  IFS='=' read -a configuration &lt;&lt;&lt; &quot;$line&quot;
-  machine=${configuration[0]}
+<h1 id="run-agent:2b111e2d93820ea9d8d426ecc3e5fd6b">Run Agent</h1>
 
-  IFS=',' read -a hosts &lt;&lt;&lt; &quot;${configuration[1]}&quot;
+<p>docker run -d &ndash;privileged -v /var/run/docker.sock:/var/run/docker.sock rancher/agent <a href="http://192.168.99.109:8080/v1/scripts/1BEF035774A57A80B8D7:1448373600000:k8MZKOxFjSKhbGo6rJYq8h8Wsw">http://192.168.99.109:8080/v1/scripts/1BEF035774A57A80B8D7:1448373600000:k8MZKOxFjSKhbGo6rJYq8h8Wsw</a></p>
 
-  DOCKER_IP=$(docker-machine ip $machine)
-  for host in &quot;${hosts[@]}&quot;; do
-    echo &quot;Adding $DOCKER_IP  $host&quot;
-    sudo bash -c &quot;sed -i '' '/^192\.168\.99\.[[:digit:]]\{0,3\}[[:space:]]*$host/d' /etc/hosts&quot;
-    sudo bash -c &quot;echo '$DOCKER_IP  $host' &gt;&gt; /etc/hosts&quot;
-  done
+<h1 id="download-locally-the-agent:2b111e2d93820ea9d8d426ecc3e5fd6b">Download locally the agent</h1>
 
-done &lt; &quot;$1&quot;
-</code></pre>
-
-<p>You have to use it with a configuration file, <code>hosts.conf</code>.</p>
-
-<pre><code># Pattern
-# &lt;docker-machine name&gt;=&lt;host name&gt;,&lt;host name&gt;,...
-registry=docker-registry
-</code></pre>
-
-<p>Then, run it with</p>
-
-<pre><code class="language-bash">&gt; update-hosts-docker-machine.sh hosts.conf
-</code></pre>
-
-<p>On OSX, you need to flush the dns cache</p>
-
-<pre><code class="language-bash">&gt; dscacheutil -flushcache
-</code></pre>
+<p>docker pull 192.168.99.120:5000/rancher/agent:v0.8.2 &amp;&amp;\
+  docker tag 192.168.99.120:5000/rancher/agent:v0.8.2 rancher/agent:v0.8.2 &amp;&amp;\
+  docker pull 192.168.99.120:5000/rancher/agent-instance:v0.5.0 &amp;&amp;\
+  docker tag 192.168.99.120:5000/rancher/agent-instance:v0.5.0 rancher/agent-instance:v0.5.0</p>
 
    </div>
  </div>
@@ -122,8 +95,8 @@ registry=docker-registry
  <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
 
  <ul class="pager">
-      &nbsp;<li class="previous"><a href="http://jgsqware.github.io/2015/11/draft/sonarqube-with-postgresql-on-docker/"> SonarQube with PostgreSQL on Docker</a></li>
-      &nbsp;<li class="next"><a href="http://jgsqware.github.io/2015/11/docker-install-osx/"> Docker: Installation on OSX</a></li>
+      &nbsp;<li class="previous"><a href="http://jgsqware.github.io/2015/12/draft/wecraft-and-devops/"> Wecraft and Devops</a></li>
+      &nbsp;<li class="next"><a href="http://jgsqware.github.io/2015/11/draft/sonarqube-with-postgresql-on-docker/"> SonarQube with PostgreSQL on Docker</a></li>
 </ul>
 
 

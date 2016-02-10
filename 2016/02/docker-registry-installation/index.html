@@ -1,0 +1,523 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Docker Registry - Docker Hub, at Home, for Free!</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.14" />
+  <link href="" rel="alternate" type="application/rss+xml" title="JG sQware" />
+  <link href="http://jgsqware.github.io/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://jgsqware.github.io/css/hc.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  
+    
+    </head>
+    <body>
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+      <div id = "wrapper">
+
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://jgsqware.github.io/"><p class="navbar-brand">JG sQware</p></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+					
+					<li><a href="http://jgsqware.github.io/">Home </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/images/profile.jpg" />
+          <li class="sidebar-brand"><a href="http://jgsqware.github.io/"><h1 class="brand">JG sQware</h1></a><h3></h3></li>
+          <hr />
+					
+						<li><a href="http://jgsqware.github.io/">Home </a></li>
+					
+          <hr />
+          <div id="social-wrapper">
+           <li> <a href="https://twitter.com/jgsqware"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+           
+           <li> <a href="https://github.com/jgsqware"><i class="fa fa-github-square"></i> github</a> </li>
+         </div>
+       </ul>
+     </div>
+
+
+
+     <div class="container">
+
+
+  <div id="article">
+   <div class="article-title">Docker Registry - Docker Hub, at Home, for Free!</div>
+   <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 2016-02-10</small></p> <hr/>
+   <div class="post">
+     
+
+<h3 id="or-how-to-have-our-docker-authenticated-registry-on-premise:c34b9d8e1a9d73777d6418bc254d4972"><em>Or how to have our docker authenticated registry On-Premise</em></h3>
+
+<p>Let&rsquo;s first take a look on <a href="https://docs.docker.com/registry/">Docker Registry</a> page:</p>
+
+<blockquote>
+<p>You should use the Registry if you want to:
+  - tightly control where your images are being stored
+  - fully own your images distribution pipeline
+  - integrate image storage and distribution tightly into your in-house development workflow</p>
+</blockquote>
+
+<p>So now, how can we deploy our registry, how can I connect to it and manage my images.</p>
+
+<h2 id="registry-authentication-what-s-behind:c34b9d8e1a9d73777d6418bc254d4972">Registry, Authentication: what&rsquo;s behind</h2>
+
+<p>Again, I will take the info from <a href="https://docs.docker.com/registry/spec/auth/token/">Docker Registry Token Authentication</a></p>
+
+<p><img src="https://docs.google.com/drawings/d/1EHZU9uBLmcH0kytDClBv6jv6WR4xZjE8RKEUw1mARJA/pub?w=480&amp;h=360" alt="Docker Registry Token Authentication" />
+</p>
+
+<p>Basically, we will deploy a Token Based Authentication server <em>&ldquo;Authorization service&rdquo;</em> then configure the registry to connect to it for authentication.
+I will use the <a href="https://docs.docker.com/compose/">docker-compose v2</a> for running multiple containers.</p>
+
+<p>The final version is on the github: <a href="http://www.github.com/jgsqware/authenticated-registry">jgsqware/authenticated-registry</a></p>
+
+<h2 id="token-based-authentication-server-and-registry-configuration:c34b9d8e1a9d73777d6418bc254d4972">Token Based Authentication server and Registry configuration</h2>
+
+<h3 id="token-based-authentication-server:c34b9d8e1a9d73777d6418bc254d4972">Token Based Authentication server</h3>
+
+<p>I will use <a href="https://hub.docker.com/r/cesanta/docker_auth/">cesanta/docker_auth/</a>, a go implementation of authentication server.</p>
+
+<p>Supported authentication methods:</p>
+
+<ul>
+<li>Static list of users</li>
+<li>Google Sign-In (incl. Google for Work / GApps for domain) (documented here)</li>
+<li>LDAP bind</li>
+<li>MongoDB user collection</li>
+</ul>
+
+<p>The following is based on Static list of User</p>
+
+<p>First, I create the following directory structure</p>
+
+<pre><code class="language-bash">authenticated-registry/
+├ docker-compose.yml
+├── config
+│   └── auth_config.yml # contain your static list of users
+└── ssl
+    ├── server.key # For this purpose ,
+    └── server.pem # we will use self-signed certificate
+</code></pre>
+
+<p>The certificate is a self signed certificate:</p>
+
+<pre><code class="language-bash">$ cd authenticated-registry/ssl
+$ sudo openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout server.key -out server.pem
+# I use auth as Common Name
+# auth is the URI of my authentication server
+</code></pre>
+
+<p>Edit the <code>authenticated-registry/docker-compose.yml</code>:</p>
+
+<pre><code class="language-yaml">version: '2'
+
+services:
+  auth:
+    image: cesanta/docker_auth
+    ports:
+      - &quot;5001:5001&quot;
+    volumes:
+      - ./config:/config:ro
+      - ./ssl:/ssl
+    command: /config/auth_config.yml
+    container_name: &quot;auth&quot;
+</code></pre>
+
+<p>Edit the <code>authenticated-registry/config/auth_config.yml</code>:</p>
+
+<pre><code class="language-yaml">server:  # Server settings.
+  # Address to listen on.
+  addr: &quot;:5001&quot;
+  # TLS certificate and key.
+  certificate: &quot;/ssl/server.pem&quot;
+  key: &quot;/ssl/server.key&quot;
+
+token:  # Settings for the tokens.
+  issuer: &quot;auth_service&quot;  # Must match issuer in the Registry config.
+  expiration: 900
+
+
+# Static user map.
+users:
+  # Password is specified as a BCrypt hash. Use htpasswd -B to generate.
+  &quot;admin&quot;:
+    password: &quot;$2y$05$C3oDhd2O3nvcacmvGxojN.MPPvcV7LApYQU3meFMU5GeC27kb.0sK&quot;
+  &quot;jgsqware&quot;: # my user
+    password: &quot;$2y$05$oGKwJ8QJDLBOoTBmC/EQiefIMV1N9Yt9jpX3SqMoRqZRRql6q7yam&quot;
+
+acl:
+  # Admin has full access to everything.
+  - match: {account: &quot;admin&quot;}
+    actions: [&quot;*&quot;]
+  # Users have full right on their repository
+  - match: {account: &quot;/.+/&quot;, name: &quot;${account}/*&quot;}
+    actions: [&quot;*&quot;]
+  # Access is denied by default.
+</code></pre>
+
+<blockquote>
+<p>For more information about the configuration options for this authentication server, refer to the <a href="https://github.com/cesanta/docker_auth">Github repo</a>.</p>
+</blockquote>
+
+<p>To generate the password with htpasswd with BCrypt hash:</p>
+
+<pre><code>$ htpasswd -nbB jgsqware jgsqware
+jgsqware:$2y$05$oGKwJ8QJDLBOoTBmC/EQiefIMV1N9Yt9jpX3SqMoRqZRRql6q7yam
+</code></pre>
+
+<h3 id="registry:c34b9d8e1a9d73777d6418bc254d4972">Registry</h3>
+
+<p>Docker offers his registry as a docker image. Nice guy!</p>
+
+<p>I based this setup on <em>registry 2.1.1</em>.</p>
+
+<blockquote>
+<p>Update: Docker released the registry <strong>2.3</strong>. It change some Manifest info and how the image is stored.</p>
+</blockquote>
+
+<p>The configuration of the registry is done by <strong>environment variable</strong>.</p>
+
+<p>Edit the <code>authenticated-registry/docker-compose.yml</code>:</p>
+
+<pre><code class="language-yaml">version: '2'
+
+services:
+  auth:
+    image: cesanta/docker_auth
+    ports:
+      - &quot;5001:5001&quot;
+    volumes:
+      - ./config:/config:ro
+      - ./ssl:/ssl
+    command: /config/auth_config.yml
+    container_name: &quot;auth&quot;
+
+  registry:
+    image: registry:2.2.1
+    ports:
+      - 5000:5000
+    volumes:
+      - ./ssl:/ssl
+    container_name: &quot;registry&quot;
+    environment:
+      - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/var/lib/registry
+      - REGISTRY_AUTH=token
+      - REGISTRY_AUTH_TOKEN_REALM=https://auth:5001/auth # the authentication server URI
+      - REGISTRY_AUTH_TOKEN_SERVICE=&quot;registry&quot;
+      - REGISTRY_AUTH_TOKEN_ISSUER=&quot;auth_service&quot; # Should be the same as token.issuer from authenticated-registry/config/auth_config.yml
+      - REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE=/ssl/server.pem
+</code></pre>
+
+<h3 id="registry-data-persistence:c34b9d8e1a9d73777d6418bc254d4972">Registry data persistence</h3>
+
+<p>I will use a <a href="http://docs.docker.com/engine/userguide/dockervolumes/">Docker Volume</a> to persist registry data.</p>
+
+<p>Edit the <code>authenticated-registry/docker-compose.yml</code>:</p>
+
+<pre><code class="language-yaml">version: '2'
+
+services:
+  auth:
+    image: cesanta/docker_auth
+    ports:
+      - &quot;5001:5001&quot;
+    volumes:
+      - ./config:/config:ro
+      - ./ssl:/ssl
+    command: /config/auth_config.yml
+    container_name: &quot;auth&quot;
+
+  registry:
+    image: registry:2.2.1
+    ports:
+      - 5000:5000
+    volumes:
+      - ./ssl:/ssl
+      - registry-data:/var/lib/registry
+    container_name: &quot;registry&quot;
+    environment:
+      - REGISTRY_STORAGE_FILESYSTEM_ROOTDIRECTORY=/var/lib/registry
+      - REGISTRY_AUTH=token
+      - REGISTRY_AUTH_TOKEN_REALM=https://auth:5001/auth # the authentication server URI
+      - REGISTRY_AUTH_TOKEN_SERVICE=&quot;registry&quot;
+      - REGISTRY_AUTH_TOKEN_ISSUER=&quot;auth_service&quot; # Should be the same as token.issuer from authenticated-registry/config/auth_config.yml
+      - REGISTRY_AUTH_TOKEN_ROOTCERTBUNDLE=/ssl/server.pem
+
+volumes:
+  registry-data: # the real name will be &lt;parent-folder-name&gt;_registry-data (dash '-' int he folder name will be removed). eg. authenticatedregistry_registry-data
+    driver: local
+</code></pre>
+
+<h2 id="let-s-run-it:c34b9d8e1a9d73777d6418bc254d4972">Let&rsquo;s Run it!</h2>
+
+<p>To start the authenticated registry, simply run</p>
+
+<pre><code class="language-bash"># Run docker-compose up -d to start all container
+# -d is for running container as daemon
+
+$ docker-compose up -d
+Creating network &quot;authenticatedregistry_default&quot; with the default driver
+Creating registry
+Creating auth
+
+</code></pre>
+
+<p>The running container can be seen by:</p>
+
+<pre><code class="language-bash">$ docker ps
+CONTAINER ID        IMAGE                 COMMAND                  CREATED             STATUS              PORTS                    NAMES
+6f706e4684fb        cesanta/docker_auth   &quot;/auth_server /config&quot;   47 minutes ago      Up 47 minutes       0.0.0.0:5001-&gt;5001/tcp   auth
+073e1d94e452        registry:2.2.1        &quot;/bin/registry /etc/d&quot;   47 minutes ago      Up 47 minutes       0.0.0.0:5000-&gt;5000/tcp   registry
+</code></pre>
+
+<p>The created data volume cn be seen by:</p>
+
+<p>&rdquo;&lsquo;bash
+$ docker volume ls
+DRIVER              VOLUME NAME
+local               authenticatedregistry_registry-data
+&ldquo;&rsquo;</p>
+
+<p>Your own docker registry is now available:
+- you can <strong>login</strong>,<strong>pull</strong>, <strong>push</strong> repository on localhost:5000</p>
+
+<pre><code class="language-bash">$ docker login localhost:5000
+Username: jgsqware
+Password:
+Email: jgsqware@wemanity.com
+Login Succeeded
+</code></pre>
+
+<pre><code class="language-bash">$ docker tag jgsqware/ubuntu-git localhost:5000/jgsqware/ubuntu-git
+$ docker push localhost:5000/jgsqware/ubuntu-git
+The push refers to a repository [localhost:5000/jgsqware/ubuntu-git]
+3ae0de97330a: Pushing [==========================&gt;                        ]   163 MB/304.5 MB
+5f70bf18a086: Pushed
+dfd83ed44976: Pushed
+217e6c75dcfc: Pushed
+c0b5f9221fac: Pushing [==============================================&gt;    ] 173.4 MB/187.7 MB
+
+</code></pre>
+
+<h2 id="backup-restore:c34b9d8e1a9d73777d6418bc254d4972">Backup &amp; Restore</h2>
+
+<h3 id="backup-registry-data:c34b9d8e1a9d73777d6418bc254d4972">Backup registry data</h3>
+
+<p>As we have create a <a href="http://docs.docker.com/engine/userguide/dockervolumes/">Docker Volume</a>, we can backup the folder where the registry save its data to a tar file easily.</p>
+
+<p>We will
+  1. run a new container and mount the <em>registry-data</em> volume
+  2. mount the <strong>local folder</strong> to <code>/backup</code> in the container.
+  3. we will compress the registry data to a tarball.
+  4. copy the tarball to the <code>/backup</code> folder to got it on our <strong>local folder</strong></p>
+
+<p>I use the jgsqware/registry-backup image. This image to the tarball and move it to backup</p>
+
+<p>the Dockerfile is simple:</p>
+
+<pre><code>FROM alpine
+MAINTAINER jgsqware &lt;jgonzalez@wemanity.com&gt;
+WORKDIR /var/lib/registry
+
+ENTRYPOINT [&quot;tar&quot;,&quot;cvf&quot;, &quot;/backup/registry-data.tar&quot;,&quot;.&quot;]
+</code></pre>
+
+<pre><code class="language-bash">$ docker run -v authenticatedregistry_registry-data:/var/lib/registry -v $(pwd):/backup jgsqware/registry-backup
+./
+./docker/
+./docker/registry/
+./docker/registry/v2/
+./docker/registry/v2/repositories/
+./docker/registry/v2/repositories/jgsqware/
+./docker/registry/v2/repositories/jgsqware/ubuntu-git/
+...
+</code></pre>
+
+<p>You have now a file <code>registry-data.tar</code> in your local folder.</p>
+
+<h3 id="restore-registry-data:c34b9d8e1a9d73777d6418bc254d4972">Restore registry data</h3>
+
+<p>You can now restore the previously backuped registry data to a new registry data container.</p>
+
+<ol>
+<li>Run the docker-compose, you will have a registry data volume but it will be empty.</li>
+<li>Uncompress the <code>registry-data.tar</code> in the corresponding directory in the registry data.
+
+<ol>
+<li>Run a new container and mount the <em>registry-data</em> volume</li>
+<li>Mount the <strong>local folder</strong> to <code>/backup</code> in the container.</li>
+<li>Uncompress the tarball to <code>/var/lib/registry</code>.</li>
+</ol></li>
+</ol>
+
+<p>I use the jgsqware/registry-backup image. This image to the tarball and move it to backup</p>
+
+<p>the Dockerfile is simple:</p>
+
+<pre><code>FROM alpine
+MAINTAINER jgsqware &lt;jgonzalez@wemanity.com&gt;
+WORKDIR /var/lib/registry
+
+ENTRYPOINT [&quot;tar&quot;,&quot;xvf&quot;, &quot;/backup/registry-data.tar&quot;,&quot;.&quot;]
+</code></pre>
+
+<pre><code class="language-bash"># The file need to be named 'registry-data.tar'
+$ docker run -v authenticatedregistry_registry-data:/var/lib/registry -v $(pwd):/backup jgsqware/registry-restore
+./
+./docker/
+./docker/registry/
+./docker/registry/v2/
+./docker/registry/v2/repositories/
+./docker/registry/v2/repositories/jgsqware/
+./docker/registry/v2/repositories/jgsqware/ubuntu-git/
+./docker/registry/v2/repositories/jgsqware/ubuntu-git/_manifests/
+./docker/registry/v2/repositories/jgsqware/ubuntu-git/_manifests/tags/
+./docker/registry/v2/repositories/jgsqware/ubuntu-git/_manifests/tags/latest/
+./docker/registry/v2/repositories/jgsqware/ubuntu-git/_manifests/tags/latest/index/
+./docker/registry/v2/repositories/jgsqware/ubuntu-git/_manifests/tags/latest/index/sha256/
+...
+</code></pre>
+
+<h2 id="using-the-docker-toolbox-for-osx-or-windows:c34b9d8e1a9d73777d6418bc254d4972">Using the Docker Toolbox for OSX or Windows</h2>
+
+<p>Because Docker need to run on a real Linux Kernel (containerization tools exist only on Linux (for now)), you can install Docker on Windows and OSX with Docker Toolbox.</p>
+
+<p>Docker Toolbox will install the client tools (docker-client, docker-compose, docker-machine) and virtualbox with boot2docker image.</p>
+
+<p>boot2docker is a tiny linux os, on which docker is runnable.
+Docker Toolbox will configure your docker client to connect to connect to the docker-machine (here is boot2docker).</p>
+
+<h3 id="docker-insecure-registry:c34b9d8e1a9d73777d6418bc254d4972">Docker Insecure Registry</h3>
+
+<p>To be able to use the registry in boot2docker, and because the registry is not secure by certificate (<em>it will be in another story</em>),
+we need to tell docker to allow communication with this insecure registry.</p>
+
+<p>It can be done by adding <code>--insecure-registry=&lt;IP-OF-REGISTRY&gt;:&lt;PORT-OF-REGISTRY&gt;</code> in the boot2docker profile.</p>
+
+<p>So,</p>
+
+<pre><code class="language-bash"># SSH your docker-machine
+# docker-machine ssh &lt;DOCKER-MACHINE-NAME&gt;
+$ docker-machine ssh default
+
+# Open in vi the boot2docker profile.
+# profile is the configuration file used by docker when it start in boot2docker
+$ sudo vi /var/lib/boot2docker/profile
+
+# Add line '--insecure-registry &lt;docker-machine-ip&gt;:5000' in **EXTRA_ARGS**
+EXTRA_ARGS='
+--label provider=virtualbox
+--insecure-registry 192.168.99.100:5000
+'
+# quit vi with :wq to save file
+
+# Restart docker
+$ sudo /etc/init.d/docker restart
+# Quit docker machine by CTRL-D
+</code></pre>
+
+<h3 id="open-registry-port-on-boot2docker:c34b9d8e1a9d73777d6418bc254d4972">Open Registry port on boot2docker</h3>
+
+<p>You need to open the vm port5000 to put your registry on the network.</p>
+
+<pre><code class="language-bash"># use VBoxManage controlvm &lt;VM-NAME&gt; natpf1 &lt;RULE-NAME&gt;,tcp,&lt;INTERFACE IP&gt;,&lt;VM-PORT-TO-OPEN&gt;,,&lt;DOCKER-PORT-TO-MAP&gt;
+# Here, we are creating a rule registry in vm registry, mapping the docker port 5000 to the vm port 5000 on every interface
+
+$ VBoxManage controlvm registry natpf1 registry,tcp,0.0.0.0,5000,,5000
+</code></pre>
+
+<p>Now, you access over the network with:
+- repository: on <IP-OF-OSX/WINDOWS-HOST>:5000</p>
+
+<h4 id="errors-what:c34b9d8e1a9d73777d6418bc254d4972">Errors&hellip; What?</h4>
+
+<ul>
+<li>If you try to access your insecure registry without define it as insecure-registry, you will received the following error when you will try to <em>push/pull</em></li>
+</ul>
+
+<pre><code class="language-bash">  $ docker pull 192.168.99.100:5000/jgsqware/ubuntu-git
+       unable to ping registry endpoint https://192.168.99.101:5000/v0/
+         v2 ping attempt failed with error: Get https://192.168.99.101:5000/v2/: tls: oversized record received with length 20527
+           v1 ping attempt failed with error: Get https://192.168.99.101:5000/v1/_ping: tls: oversized record received with length 20527
+</code></pre>
+
+<ul>
+<li>Sometimes, docker run out of his mind when restarting
+You can see it in log, with last line as</li>
+</ul>
+
+<pre><code class="language-bash">  # In your docker machine. Remember, SSH things.
+  $ tail -f /var/log/docker.log
+  level=fatal msg=&quot;Shutting down due to ServeAPI error: listen tcp 0.0.0.0:2376: bind: address already in use&quot;
+</code></pre>
+
+<p>If you see that, just kill docker and start it again</p>
+
+<pre><code class="language-bash">  $ sudo killall docker
+  $ sudo /etc/init.d/docker start
+</code></pre>
+
+<p>Now, it should be ok</p>
+
+<pre><code class="language-bash">  $ tail -f /var/log/docker.log
+  level=info msg=&quot;Daemon has completed initialization&quot;
+  level=info msg=&quot;Docker daemon&quot; commit=f4bf5c7 execdriver=native-0.2 graphdriver=aufs version=1.8.3
+</code></pre>
+
+<h6 id="this-post-is-inspired-by-this-article-creating-private-docker-registry-2-0-with-token-authentication-service-https-the-binbashtheory-com-creating-private-docker-registry-2-0-with-token-authentication-service:c34b9d8e1a9d73777d6418bc254d4972">This post is inspired by this article: <a href="https://the.binbashtheory.com/creating-private-docker-registry-2-0-with-token-authentication-service/">Creating Private Docker Registry 2.0 with Token Authentication Service</a></h6>
+
+   </div>
+ </div>
+
+
+ <a href="https://twitter.com/share" class="twitter-share-button " data-size="small" data-count="none">Tweet</a>
+ <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+ <ul class="pager">
+     
+      &nbsp;<li class="next"><a href="http://jgsqware.github.io/2016/01/docker-pro-tips/"> Docker Pro Tips</a></li>
+</ul>
+
+
+
+    </ul>
+    </div>
+    <footer>
+
+        <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+ 
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/hc.js"></script>
+</body>
+
+</html>
+

@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title></title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="">
+  <meta name="generator" content="Hugo 0.14" />
+  <link href="" rel="alternate" type="application/rss+xml" title="JG sQware" />
+  <link href="http://jgsqware.github.io/css/bootstrap.min.css" rel="stylesheet">
+  <link href="http://jgsqware.github.io/css/hc.css" rel="stylesheet">
+  <link href="//netdna.bootstrapcdn.com/font-awesome/4.0.3/css/font-awesome.css" rel="stylesheet">
+  
+    
+    </head>
+    <body>
+<div class="nav-toggle"><i class="fa fa-bars fa-2x"></i> Herring Cove </div>
+      <div id = "wrapper">
+
+
+<div class="navbar navbar-default" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a href="http://jgsqware.github.io/"><p class="navbar-brand">JG sQware</p></a>
+        </div>
+        <div class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+					
+					
+					<li><a href="http://jgsqware.github.io/">Home </a></li>
+					
+          </ul>
+        </div>
+      </div>
+    </div>
+
+
+
+       
+       <div id="sidebar-wrapper">
+        <ul class="sidebar-nav">
+					<img src="/images/profile.jpg" />
+          <li class="sidebar-brand"><a href="http://jgsqware.github.io/"><h1 class="brand">JG sQware</h1></a><h3></h3></li>
+          <hr />
+					
+						<li><a href="http://jgsqware.github.io/">Home </a></li>
+					
+          <hr />
+          <div id="social-wrapper">
+           <li> <a href="https://twitter.com/jgsqware"><i class="fa fa-twitter-square"></i> @twitter</a></li>
+           
+           
+           <li> <a href="https://github.com/jgsqware"><i class="fa fa-github-square"></i> github</a> </li>
+         </div>
+       </ul>
+     </div>
+
+
+
+     <div class="container">
+
+
+  <div id="article">
+   <div class="article-title"></div>
+   <p class="meta"><small>&nbsp;<i class="fa fa-calendar-o"></i> 0001-01-01</small></p> <hr/>
+   <div class="post">
+     
+
+<h1 id="install-gogs:8c8be46b296d6b9c1a91080fe9b4316b">Install Gogs</h1>
+
+<ol>
+<li><p>Create volume
+<code>docker volume create --name gogs-data</code></p></li>
+
+<li><p>Pull image
+<code>docker pull gogs/gogs</code></p></li>
+
+<li><p>Run with volume
+<code>docker run --name=gogs -p 10022:22 -p 10080:3000 -v gogs-data:/data -d gogs/gogs</code></p></li>
+</ol>
+
+<h2 id="settings:8c8be46b296d6b9c1a91080fe9b4316b">Settings</h2>
+
+<p>Most of settings are obvious and easy to understand, but there are some settings can be confusing by running Gogs inside Docker:</p>
+
+<h3 id="database-settings:8c8be46b296d6b9c1a91080fe9b4316b">Database Settings</h3>
+
+<ul>
+<li><strong>Database type</strong>: SQLite3</li>
+<li><strong>Path</strong>: data/gogs.db</li>
+</ul>
+
+<h3 id="general-settings:8c8be46b296d6b9c1a91080fe9b4316b">General Settings</h3>
+
+<ul>
+<li><strong>Repository Root Path</strong>: keep it as default value <code>/home/git/gogs-repositories</code> because <code>start.sh</code> already made a symbolic link for you.</li>
+<li><strong>Run User</strong>: keep it as default value <code>git</code> because <code>start.sh</code> already setup a user with name <code>git</code>.</li>
+<li><strong>Domain</strong>: fill in with Docker container IP(e.g. <code>192.168.99.100</code>). But if you want to access your Gogs instance from a different physical machine, please fill in with the hostname or IP address of the Docker host machine.</li>
+<li><strong>SSH Port</strong>: Use the exposed port from Docker container. For example, your SSH server listens on <code>22</code> inside Docker, but you expose it by <code>10022:22</code>, then use <code>10022</code> for this value. <strong>Builtin SSH server is not recommended inside Docker Container</strong></li>
+<li><strong>HTTP Port</strong>: Use port you want Gogs to listen on inside Docker container. For example, your Gogs listens on <code>3000</code> inside Docker, and you expose it by <code>10080:3000</code>, but you still use <code>3000</code> for this value.</li>
+<li><strong>Application URL</strong>: Use combination of <strong>Domain</strong> and <strong>exposed HTTP Port</strong> values(e.g. <code>http://192.168.99.100:10080/</code>).</li>
+</ul>
+
+<h1 id="vulnerable-container:8c8be46b296d6b9c1a91080fe9b4316b">Vulnerable container</h1>
+
+<pre><code class="language-Dockerfile">FROM busybox:latest
+MAINTAINER Julien Garcia Gonzalez &lt;jgonzalez@wemanity.com&gt;
+
+ENTRYPOINT echo &quot;Hello from Vulnerable Container!&quot;
+</code></pre>
+
+<h1 id="coreos-clair:8c8be46b296d6b9c1a91080fe9b4316b">CoreOS Clair</h1>
+
+<h2 id="installing-gopath:8c8be46b296d6b9c1a91080fe9b4316b">Installing GOPATH</h2>
+
+<pre><code class="language-bash"># Cannot use ~ metashell character
+mkdir /home/juliengarcia/.go
+
+# In .zshrc
+export GOPATH=&quot;~/.go&quot;
+export PATH=$PATH:$GOPATH/bin
+</code></pre>
+
+<h2 id="install-clair:8c8be46b296d6b9c1a91080fe9b4316b">Install Clair</h2>
+
+<h3 id="install-go-tool-to-analyze-image-locally:8c8be46b296d6b9c1a91080fe9b4316b">Install Go Tool to analyze image locally</h3>
+
+<pre><code class="language-bash">go get -u github.com/coreos/clair/contrib/analyze-local-images
+</code></pre>
+
+<h3 id="copy-base-configuration-file-locally:8c8be46b296d6b9c1a91080fe9b4316b">Copy base configuration file locally</h3>
+
+<pre><code class="language-bash"># In your Clair folder
+curl -O https://raw.githubusercontent.com/coreos/clair/master/config.example.yaml
+</code></pre>
+
+<h3 id="run-clair-container:8c8be46b296d6b9c1a91080fe9b4316b">Run Clair container</h3>
+
+<pre><code class="language-bash">docker run -it -v /tmp:/tmp -p 6060:6060 -p 6061:6061 -v &lt;DIR_WITH_CONFIG&gt;:/config:ro quay.io/coreos/clair:latest --config=/config/config.example.yaml
+</code></pre>
+
+   </div>
+ </div>
+
+
+ <a href="https://twitter.com/share" class="twitter-share-button " data-size="small" data-count="none">Tweet</a>
+ <script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+'://platform.twitter.com/widgets.js';fjs.parentNode.insertBefore(js,fjs);}}(document, 'script', 'twitter-wjs');</script>
+
+ <ul class="pager">
+      &nbsp;<li class="previous"><a href="http://jgsqware.github.io/2015/11/deploy-hugo-on-github-user-pages/"> Deploy Hugo on Github user pages</a></li>
+     
+</ul>
+
+
+
+    </ul>
+    </div>
+    <footer>
+
+        <p class="text-muted credit">&copy; . All rights reserved. </p>
+    </footer>
+ 
+    <script src="/js/jquery-1.10.2.min.js"></script>
+    <script src="/js/bootstrap.min.js"></script>
+    <script src="/js/bootstrap.js"></script>
+    <script type="text/javascript" src="/js/hc.js"></script>
+</body>
+
+</html>
+
