@@ -464,10 +464,13 @@ You can see it in log, with last line as&lt;/li&gt;
 
 &lt;p&gt;Now, you have your Authenticated Registry on-Premise. You can save your docker images.&lt;/p&gt;
 
-&lt;p&gt;The next step would be:
-  1. Having a GUI for your registry
-  2. Integrate the image build and deploy phase in CI
-  3. Track vulnerabilities in your images&lt;/p&gt;
+&lt;p&gt;The next step would be:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Having a GUI for your registry&lt;/li&gt;
+&lt;li&gt;Integrate the image build and deploy phase in CI&lt;/li&gt;
+&lt;li&gt;Track vulnerabilities in your images&lt;/li&gt;
+&lt;/ol&gt;
 
 &lt;h6 id=&#34;this-post-is-inspired-by-this-article-creating-private-docker-registry-2-0-with-token-authentication-service-https-the-binbashtheory-com-creating-private-docker-registry-2-0-with-token-authentication-service:c34b9d8e1a9d73777d6418bc254d4972&#34;&gt;This post is inspired by this article: &lt;a href=&#34;https://the.binbashtheory.com/creating-private-docker-registry-2-0-with-token-authentication-service/&#34;&gt;Creating Private Docker Registry 2.0 with Token Authentication Service&lt;/a&gt;&lt;/h6&gt;
 </description>
