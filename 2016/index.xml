@@ -17,7 +17,24 @@
       <guid>http://jgsqware.github.io/2016/02/docker-registry-installation/</guid>
       <description>
 
-&lt;h3 id=&#34;or-how-to-have-our-docker-authenticated-registry-on-premise:c34b9d8e1a9d73777d6418bc254d4972&#34;&gt;&lt;em&gt;Or how to have our docker authenticated registry On-Premise&lt;/em&gt;&lt;/h3&gt;
+&lt;p&gt;Docker containers is everywhere. You can found it on &lt;a href=&#34;https://hub.docker.com&#34;&gt;Docker Hub&lt;/a&gt;, &lt;a href=&#34;https://quay.io&#34;&gt;Quay.io&lt;/a&gt;,&amp;hellip;
+You can find easily a working container for your purpose (eg. database, code analysis, compilation). For development, it&amp;rsquo;s perfect.&lt;/p&gt;
+
+&lt;p&gt;Now, you&amp;rsquo;ll love to use it as far is possible in your deployment chain. And probably your company, as my client, doesn&amp;rsquo;t want to have is specific container (with codebase, data,&amp;hellip;) exposed and public in the cloud.
+For sure, you can use private repositories to upload your images, but
+  1. It&amp;rsquo;s &lt;strong&gt;in the cloud&lt;/strong&gt;
+  2. It&amp;rsquo;s &lt;strong&gt;not free&lt;/strong&gt;&lt;/p&gt;
+
+&lt;p&gt;My client not use Cloud at all. He always look like for On-Premise.
+Docker offers a complete solution for that: &lt;a href=&#34;https://hub.docker.com/enterprise/trial&#34;&gt;Docker Datacenter&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;So, we are one step further:
+1. &lt;del&gt;It&amp;rsquo;s in the cloud&lt;/del&gt;
+2. It&amp;rsquo;s not free&lt;/p&gt;
+
+&lt;p&gt;We will focused now on the second point:&lt;/p&gt;
+
+&lt;h3 id=&#34;how-can-i-have-a-docker-authenticated-registry-on-premise-for-free:c34b9d8e1a9d73777d6418bc254d4972&#34;&gt;&lt;em&gt;How can I have a docker authenticated registry On-Premise, for free?&lt;/em&gt;&lt;/h3&gt;
 
 &lt;p&gt;Let&amp;rsquo;s first take a look on &lt;a href=&#34;https://docs.docker.com/registry/&#34;&gt;Docker Registry&lt;/a&gt; page:&lt;/p&gt;
 
@@ -400,7 +417,7 @@ $ VBoxManage controlvm registry natpf1 registry,tcp,0.0.0.0,5000,,5000
 &lt;/code&gt;&lt;/pre&gt;
 
 &lt;p&gt;Now, you access over the network with:
-- repository: on &lt;IP-OF-OSX/WINDOWS-HOST&gt;:5000&lt;/p&gt;
+- repository: on &lt;code&gt;&amp;lt;IP-OF-OSX/WINDOWS-HOST&amp;gt;:5000&lt;/code&gt;&lt;/p&gt;
 
 &lt;h4 id=&#34;errors-what:c34b9d8e1a9d73777d6418bc254d4972&#34;&gt;Errors&amp;hellip; What?&lt;/h4&gt;
 
@@ -436,6 +453,15 @@ You can see it in log, with last line as&lt;/li&gt;
   level=info msg=&amp;quot;Daemon has completed initialization&amp;quot;
   level=info msg=&amp;quot;Docker daemon&amp;quot; commit=f4bf5c7 execdriver=native-0.2 graphdriver=aufs version=1.8.3
 &lt;/code&gt;&lt;/pre&gt;
+
+&lt;h2 id=&#34;what-s-next:c34b9d8e1a9d73777d6418bc254d4972&#34;&gt;What&amp;rsquo;s next?&lt;/h2&gt;
+
+&lt;p&gt;Now, you have your Authenticated Registry on-Premise. You can save your docker images.&lt;/p&gt;
+
+&lt;p&gt;The next step would be:
+  1. Having a GUI for your registry
+  2. Integrate the image build and deploy phase in CI
+  3. Track vulnerabilities in your images&lt;/p&gt;
 
 &lt;h6 id=&#34;this-post-is-inspired-by-this-article-creating-private-docker-registry-2-0-with-token-authentication-service-https-the-binbashtheory-com-creating-private-docker-registry-2-0-with-token-authentication-service:c34b9d8e1a9d73777d6418bc254d4972&#34;&gt;This post is inspired by this article: &lt;a href=&#34;https://the.binbashtheory.com/creating-private-docker-registry-2-0-with-token-authentication-service/&#34;&gt;Creating Private Docker Registry 2.0 with Token Authentication Service&lt;/a&gt;&lt;/h6&gt;
 </description>
